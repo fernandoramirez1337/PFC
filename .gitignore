@@ -1,1 +1,6 @@
 *.zip
+*.aux
+*.bbl
+*.blg
+*.log
+

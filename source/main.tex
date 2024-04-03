@@ -1,0 +1,71 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Securing Data in Low-Resource Systems: Lightweight Block Cryptography Strategies}
+
+
+\author{\IEEEauthorblockN{Fernando Ramirez Arredondo}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+Arequipa, Perú \\
+fernando.ramirez@ucsp.edu.pe}
+\and
+\IEEEauthorblockN{Yván Jesús Túpac Valdivia}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+Arequipa, Perú \\
+ytupac@ucsp.edu.pe}}
+
+
+\maketitle
+
+\begin{abstract}
+
+\textbf{Aquí deberá colocar el abstract del trabajo en español.
+No debe modificar el formato de este documento, decir, no debe cambiar ni el tipo ni el tamaño de la fuente. No debe cambiar el ancho de los márgenes. No debe cambiar el interlineado, etc.}
+
+\end{abstract}
+
+\begin{IEEEkeywords}
+component, formatting, style, styling, insert
+\end{IEEEkeywords}
+
+\section{Introducción}
+\textbf{Aquí deberá colocar la introducción del paper. Debe incluir un contexto (situar el tema), la descripción de un problema, el objetivo y la organización del texto. Esta sección no debe tener subsecciones. La descripción debe seguir la descripción en embudo, es decir de los más general a lo más específico.}
+
+\section{Estado del Arte}
+\textbf{Aquí deberá colocar el estado del arte de la investigación.}
+En el estudio de Fan et al.\cite{fan2013wg}, se definió un cifrado ligero como un algoritmo criptográfico diseñado específicamente para dispositivos con recursos limitados. El algoritmo necesitaba abordar tres desafíos clave: minimizar la sobrecarga (en términos de área de silicio o huella de memoria), garantizar un bajo consumo de energía y mantener un nivel suficiente de seguridad.
+
+Otros investigadores han adoptado un enfoque cuantitativo para la definición de cifrados ligeros. Por ejemplo, en el estudio realizado por Cazorla et al.\cite{cazorla2013survey} se propusieron criterios específicos para categorizar un cifrado como ligero. Estos criterios abarcan atributos como el tamaño del bloque, el tamaño de la clave, las operaciones y la programación de claves. En el contexto de los cifrados de bloque ligeros, el término "ligero" denota un tamaño de bloque reducido (32, 48 o 64 bits) en contraste con los cifrados convencionales, que suelen tener tamaños de bloque más grandes (64 o 128 bits).
+
+El informe NIST IR 8114\cite{NIST}, trabajando hacia la estandarización de estos algoritmos, define la criptografía ligera como un subcampo de la criptografía que tiene como objetivo proporcionar soluciones adaptadas para dispositivos con recursos limitados.
+
+
+\section{Técnicas para resolver el problema}
+\textbf{Aquí deberá dar la descripción detallada de las técnicas que va a comparar y que por lo tanto va a implementar. Deberá crear dos secciones, una para cada técnica.}
+\subsection{Substitution-Permutation Network}
+\subsection{Feistel Network}
+\section{Experimentos y Resultados}
+\textbf{En esta sección debe colocar los experimientos y resultados. Si el proyecto todavía no tiene resultados, debe eliminar esta sección.}
+
+\section{Conclusiones}
+\textbf{Aquí debe colocar las conclusiones}
+
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography/references}
+\vspace{12pt}
+
+
+\end{document}
