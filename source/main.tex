@@ -44,8 +44,21 @@ component, formatting, style, styling, insert
 \section{Introducción}
 \textbf{Aquí deberá colocar la introducción del paper. Debe incluir un contexto (situar el tema), la descripción de un problema, el objetivo y la organización del texto. Esta sección no debe tener subsecciones. La descripción debe seguir la descripción en embudo, es decir de los más general a lo más específico.}
 
+En 2016, el fundador y presidente ejecutivo del Foro Económico Mundial, Klaus Schwab, escribió un libro titulado La Cuarta Revolución Industrial, en el cual explicaba que la forma en que vivimos, trabajamos y nos relacionamos unos con otros estaba a punto de ser alterada fundamentalmente por una revolución digital diferente a las que la humanidad había experimentado antes. Volviendo al día de hoy, esta llamada cuarta revolución industrial se ha caracterizado por una fusión de tecnologías que está difuminando las fronteras entre las esferas física, digital y biológica \cite{WorldEconomicForum}.
+
+El paradigma del Internet de las cosas (IoT, por sus siglas en inglés) corresponde al campo creado por dispositivos integrados con electrónica, software, sensores y conectividad, lo que permite la transmisión, recepción y procesamiento de datos a través de diversas infraestructuras de comunicación. El IoT genera más oportunidades para la integración directa entre el mundo físico y los sistemas basados en computadora.
+
+Hasta el año 2019, el IoT, que solía operar en espacios de redes más pequeños, se ha expandido a redes de área amplia, aumentando así los riesgos asociados debido al esperado aumento en dispositivos IoT en diversos entornos. Con el rápido crecimiento de las aplicaciones de IoT, se genera y se intercambia una cantidad sustancial de datos sensibles, lo que ha llevado a la observación de varios problemas de seguridad y privacidad. A medida que los dispositivos se vuelven más interconectados, las preocupaciones de seguridad y privacidad se volverán más pronunciadas, exponiendo continuamente fallas y debilidades de seguridad adicionales. En términos estadísticos, todos los errores y debilidades expuestos pueden ser explotados en un entorno con miles de millones de dispositivos.
+
+Thakor et al. categorizaron los dispositivos IoT en dos grupos según sus recursos \cite{IoT_1}. El primer grupo incluye dispositivos abundantes en recursos como servidores, computadoras personales, tabletas, teléfonos inteligentes, etc. El segundo grupo comprende dispositivos limitados en recursos, como sensores industriales o nodos de sensores, etiquetas RFID, actuadores, etc.
+
+Este último grupo de dispositivos enfrenta múltiples restricciones, incluidas limitaciones en recursos, memoria, consumo de energía y velocidad. El desafío en términos de rendimiento surge al intentar implementar criptografía tradicional en dispositivos con recursos limitados. Esta dificultad se atribuye a las operaciones matemáticas complejas y exigentes en recursos involucradas en técnicas criptográficas tradicionales, que requieren un espacio de memoria sustancial y una alta potencia de procesamiento. El costo de implementación de la criptografía tradicional en dispositivos de baja capacidad de recursos es notablemente alto. En consecuencia, se introdujo la criptografía ligera, surgida de la notable expansión en tecnologías ubicuas emergentes, como una técnica criptográfica moderna para abordar estos problemas.
+
+Los cifrados se clasifican como asimétricos o simétricos. Aunque los cifrados asimétricos ofrecen características de seguridad mejoradas, requieren más potencia de cálculo y tienden a ser relativamente más costosos. Debido a estas razones, los cifrados asimétricos no son tan populares en dispositivos con recursos limitados. Dentro de las dos principales clasificaciones de cifrados simétricos, los cifrados por bloques y por flujo son los más destacados. Este estudio se enfoca en los cifrados por bloques, concretamente detallando las estructuras de la Red de Sustitución-Permutación (Substitution-Permutation Network) \cite{heys1996substitution} y la Red de Feistel (Feistel Network) \cite{FEISTEL}, que se encuentran en la sección \ref{tecnicas}. Luego, en la sección \ref{experimentos}, se presentarán los resultados de los experimentos realizados.
+
 \section{Estado del Arte}
 \textbf{Aquí deberá colocar el estado del arte de la investigación.}
+
 En el estudio de Fan et al.\cite{fan2013wg}, se definió un cifrado ligero como un algoritmo criptográfico diseñado específicamente para dispositivos con recursos limitados. El algoritmo necesitaba abordar tres desafíos clave: minimizar la sobrecarga (en términos de área de silicio o huella de memoria), garantizar un bajo consumo de energía y mantener un nivel suficiente de seguridad.
 
 Otros investigadores han adoptado un enfoque cuantitativo para la definición de cifrados ligeros. Por ejemplo, en el estudio realizado por Cazorla et al.\cite{cazorla2013survey} se propusieron criterios específicos para categorizar un cifrado como ligero. Estos criterios abarcan atributos como el tamaño del bloque, el tamaño de la clave, las operaciones y la programación de claves. En el contexto de los cifrados de bloque ligeros, el término "ligero" denota un tamaño de bloque reducido (32, 48 o 64 bits) en contraste con los cifrados convencionales, que suelen tener tamaños de bloque más grandes (64 o 128 bits).
@@ -53,11 +66,13 @@ Otros investigadores han adoptado un enfoque cuantitativo para la definición de
 El informe NIST IR 8114\cite{NIST}, trabajando hacia la estandarización de estos algoritmos, define la criptografía ligera como un subcampo de la criptografía que tiene como objetivo proporcionar soluciones adaptadas para dispositivos con recursos limitados.
 
 
-\section{Técnicas para resolver el problema}
+\section{Técnicas para resolver el problema} \label{tecnicas}
 \textbf{Aquí deberá dar la descripción detallada de las técnicas que va a comparar y que por lo tanto va a implementar. Deberá crear dos secciones, una para cada técnica.}
+
 \subsection{Substitution-Permutation Network}
 \subsection{Feistel Network}
-\section{Experimentos y Resultados}
+
+\section{Experimentos y Resultados} \label{experimentos}
 \textbf{En esta sección debe colocar los experimientos y resultados. Si el proyecto todavía no tiene resultados, debe eliminar esta sección.}
 
 \section{Conclusiones}
