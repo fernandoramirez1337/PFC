@@ -66,6 +66,17 @@ Otros investigadores han adoptado un enfoque cuantitativo para la definición de
 El informe NIST IR 8114\cite{NIST}, trabajando hacia la estandarización de estos algoritmos, define la criptografía ligera como un subcampo de la criptografía que tiene como objetivo proporcionar soluciones adaptadas para dispositivos con recursos limitados.
 
 
+En los últimos años, se han generado notables avances en los cifrados de bloques ligeros, con varias contribuciones importantes que han mejorado tanto la eficiencia como la seguridad. IVLBC, presentado por Huang et al.\cite{IVLBC} en 2022, se caracterizó por su tamaño de bloque de 64 bits y longitudes de clave de 80 y 128 bits, junto con 29 rondas de iteración. Al utilizar S-boxes involutivas livianas y permutaciones basadas en nibble, IVLBC permitió la reutilización de circuitos y códigos entre cifrado y descifrado.
+
+DULBC, propuesto también en 2022 por Yang et al.\cite{DULBC}, ofreció un cifrado ligero y dinámico con un tamaño de bloque de 64 bits y longitudes de clave de 80 y 128 bits. Este algoritmo empleó funciones redondas dependientes de claves y demostró una superioridad en la complejidad del criptoanálisis exponencial sobre las alternativas estáticas.
+
+LBCCS, propuesto en el mismo año por Zhu et al.\cite{LBCCS}, ofrecía 20 rondas con bloques y claves de 128 bits. Este algoritmo construyó S-boxes altamente seguras y P-boxes difusivas utilizando sistemas caóticos combinacionales, a la vez que reducía la complejidad mediante una función de ronda adaptable. Sin embargo, la implementación en hardware de LBCCS requería un costo considerable, llegando a alcanzar los 2227 GE, lo que resalta los desafíos inherentes en la búsqueda de eficiencia, a pesar de las sofisticadas características criptográficas que presenta.
+
+SCENERY, introducido también en 2022 por Feng y Li\cite{SCENERY}, se caracterizaba por su tamaño de bloque y clave de 64 y 80 bits respectivamente, con 28 rondas. Mediante su función de ronda que constaba de 8 S-boxes paralelas de 4 × 4 y una matriz de difusión binaria de 32 × 32, SCENERY demostró una eficiencia notable en requisitos de hardware, con un total de 1438 GE, posicionándose por debajo de otros algoritmos de cifrado comparables.
+
+En 2021, LBC-IoT surgió como un cifrado ultraligero propuesto por Ramadan et al.\cite{LBC-IoT}, con un tamaño de bloque de 32 bits, una longitud de clave de 80 bits y 32 rondas. LBC-IoT minimizó los costos de hardware mediante la utilización de S-boxes, desplazamientos laterales y XOR de 4 bits, lo que requirió solo 548 GE en hardware.
+
+
 \section{Técnicas para resolver el problema} \label{tecnicas}
 \textbf{Aquí deberá dar la descripción detallada de las técnicas que va a comparar y que por lo tanto va a implementar. Deberá crear dos secciones, una para cada técnica.}
 
