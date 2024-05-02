@@ -7,6 +7,11 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage[english]{babel}
+\usepackage{booktabs} % For improved table formatting
+\usepackage{array} % For improved column formatting
+\usepackage{multicol} % For multi-column formatting
+\usepackage{url}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -31,62 +36,226 @@ ytupac@ucsp.edu.pe}}
 \maketitle
 
 \begin{abstract}
-
-\textbf{Aquí deberá colocar el abstract del trabajo en español.
-No debe modificar el formato de este documento, decir, no debe cambiar ni el tipo ni el tamaño de la fuente. No debe cambiar el ancho de los márgenes. No debe cambiar el interlineado, etc.}
-
+    Secure communication for resource-constrained devices is crucial in today's world. This work classifies seven lightweight block ciphers designed for such devices. These ciphers offer efficient encryption for data security while minimizing resource consumption. Our analysis focuses on the two main categories of lightweight block ciphers: Substitution-Permutation Networks (SPNs) and Feistel Networks (FNs). We explore the key strategies these ciphers leverage within their chosen structures to achieve state-of-the-art performance. In particular, the analysis reveals that two prominent techniques are employed: bit-slicing and involutive permutations. These techniques play a significant role in optimizing the ciphers for resource-constrained environments.
 \end{abstract}
 
 \begin{IEEEkeywords}
-IoT, Feistel, Substitution-Permutation
+iot, feistel, substitution-permutation, resource-constrained, lightweight, cryptography
 \end{IEEEkeywords}
 
-\section{Introducción}
-\textbf{Aquí deberá colocar la introducción del paper. Debe incluir un contexto (situar el tema), la descripción de un problema, el objetivo y la organización del texto. Esta sección no debe tener subsecciones. La descripción debe seguir la descripción en embudo, es decir de los más general a lo más específico.}
+\section{Introduction}
 
-En 2016, el fundador y presidente ejecutivo del Foro Económico Mundial, Klaus Schwab, publicó un libro titulado La Cuarta Revolución Industrial, en el cual explicaba que la forma en que vivimos, trabajamos y nos relacionamos unos con otros estaba a punto de ser alterada fundamentalmente por una revolución digital diferente a las que la humanidad había experimentado antes. Volviendo al día de hoy, esta llamada cuarta revolución industrial se ha caracterizado por una fusión de tecnologías que está difuminando las fronteras entre las esferas física, digital y biológica \cite{WorldEconomicForum}.
+The Internet of Things (IoT) has spawned an era of interconnected devices, generating vast amounts of data and transforming our interaction with the physical world. However, this interconnectedness presents a growing security challenge. As Thakor et al. \cite{IoT_1} categorize, IoT devices fall into two resource-based groups: resource-rich devices like servers, personal computers, and smartphones, and resource-constrained devices like sensor nodes, RFID tags, and actuators. Securing the sensitive data generated or transmitted by these resource-constrained devices becomes particularly challenging due to their limitations.
 
-El paradigma del Internet de las cosas (IoT, por sus siglas en inglés) corresponde al campo creado por dispositivos integrados con electrónica, software, sensores y conectividad, lo que permite la transmisión, recepción y procesamiento de datos a través de diversas infraestructuras de comunicación. El IoT genera más oportunidades para la integración directa entre el mundo físico y los sistemas basados en computadora.
+\begin{table}[ht]
+    \centering
+    \caption{Cryptographic Approaches on Different Devices}
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Device} & \textbf{Cryptography} \\
+        \midrule
+        Servers, Desktops and Smartphones & Conventional Cryptography \\
+        Embedded Systems and RFID & Lightweight Cryptography \\
+        \bottomrule
+    \end{tabular}
+    \label{table:crypto_devices}
+\end{table}
 
-Hasta el año 2019, el IoT, que solía operar en espacios de redes más pequeños, se ha expandido a redes de área amplia, aumentando así los riesgos asociados debido al esperado aumento en dispositivos IoT en diversos entornos. Con el rápido crecimiento de las aplicaciones de IoT, se genera y se intercambia una cantidad sustancial de datos sensibles, lo que ha llevado a la observación de varios problemas de seguridad y privacidad. A medida que los dispositivos se vuelven más interconectados, las preocupaciones de seguridad y privacidad se volverán más pronunciadas, exponiendo continuamente fallas y debilidades de seguridad adicionales. En términos estadísticos, todos los errores y debilidades expuestos pueden ser explotados en un entorno con miles de millones de dispositivos.
+This challenge is further amplified by the evolution of IoT, which has transitioned from smaller networks to wide area networks, leading to a rapid growth in the number of interconnected devices. As IoT applications increase, a substantial amount of sensitive data is exchanged, raising concerns about privacy and security. Increased device interconnectivity further intensifies these concerns, potentially exposing new vulnerabilities with each additional device. In a landscape teeming with billions of interconnected devices, even a single security flaw can be exploited on a massive scale.
 
-Thakor et al. categorizaron los dispositivos IoT en dos grupos según sus recursos \cite{IoT_1}. El primer grupo incluye dispositivos abundantes en recursos como servidores, computadoras personales, tabletas, teléfonos inteligentes, etc. El segundo grupo comprende dispositivos limitados en recursos, como sensores industriales o nodos de sensores, etiquetas RFID, actuadores, etc.
+Just as physical security measures like locks, safes, and opaque envelopes protect our valuables, cryptography serves as the digital equivalent, safeguarding the integrity and confidentiality of data in our online activities. This work aims to contribute to the application of cryptography for resource-constrained devices in the ever-expanding IoT landscape, where robust security solutions are essential to trust the activities and processes we reproduce or create from scratch in the digital world. 
+Traditional cryptography, often computationally intensive, is impractical for these resource-constrained devices.  Lightweight cryptography emerges as a modern solution, specifically designed for devices with limitations in memory, processing power, and energy consumption. It prioritizes low computational complexity and a small memory footprint.
 
-Este último grupo de dispositivos enfrenta múltiples restricciones, incluidas limitaciones en recursos, memoria, consumo de energía y velocidad. El desafío en términos de rendimiento surge al intentar implementar criptografía tradicional en dispositivos con recursos limitados. Esta dificultad se atribuye a las operaciones matemáticas complejas y exigentes en recursos involucradas en técnicas criptográficas tradicionales, que requieren un espacio de memoria sustancial y una alta potencia de procesamiento. El costo de implementación de la criptografía tradicional en dispositivos de baja capacidad de recursos es notablemente alto. En consecuencia, se introdujo la criptografía ligera, surgida de la notable expansión en tecnologías ubicuas emergentes, como una técnica criptográfica moderna para abordar estos problemas.
+Ciphers are categorized into two primary classes: asymmetric and symmetric. While asymmetric ciphers offer enhanced security features, they necessitate greater computational resources and often incur higher implementation costs. Consequently, they are less suitable for resource-constrained devices. Among symmetric ciphers, block ciphers and stream ciphers are the most prevalent. This study focuses on block ciphers, delving into two fundamental structures employed in lightweight block ciphers, Feistel Networks and Substitution-Permutation Networks.
 
-Los cifrados se clasifican como asimétricos o simétricos. Aunque los cifrados asimétricos ofrecen características de seguridad mejoradas, requieren más potencia de cálculo y tienden a ser relativamente más costosos. Debido a estas razones, los cifrados asimétricos no son tan populares en dispositivos con recursos limitados. Dentro de las dos principales clasificaciones de cifrados simétricos, los cifrados por bloques y por flujo son los más destacados. Este estudio se enfoca en los cifrados por bloques, concretamente detallando las estructuras de la Red de Sustitución-Permutación (Substitution-Permutation Network) \cite{heys1996substitution} y la Red de Feistel (Feistel Network) \cite{FEISTEL}, que se encuentran en la sección \ref{tecnicas}. Luego, en la sección \ref{experimentos}, se presentarán los resultados de los experimentos realizados.
+The Feistel Network (FN) stands as a fundamental structure in block cipher design. It offers a modular and efficient approach to encryption, employing multiple rounds of data processing. In each round, a half-block of data is processed using a round function, often incorporating non-linear substitutions and permutations. The output of this function is then combined with the other half-block using an XOR operation, creating a dependency between rounds that strengthens the overall security.\cite{FEISTEL}
 
-\section{Estado del Arte}
-\textbf{Aquí deberá colocar el estado del arte de la investigación.}
+The Substitution-Permutation Network (SPN) is another prominent block cipher structure. It relies on a series of substitution and permutation stages. Substitution boxes (S-boxes) replace data bits with new values, introducing non-linearity to confuse potential attackers. Permutation boxes (P-boxes) rearrange the data bits, making it challenging to discern the original data.\cite{heys1996substitution}
 
-En el estudio de Fan et al.\cite{fan2013wg}, se definió un cifrado ligero como un algoritmo criptográfico diseñado específicamente para dispositivos con recursos limitados. El algoritmo necesitaba abordar tres desafíos clave: minimizar la sobrecarga (en términos de área de silicio o huella de memoria), garantizar un bajo consumo de energía y mantener un nivel suficiente de seguridad.
+Both FN and SPN structures offer advantages in lightweight cryptography. FN structures are known for their modularity and ease of implementation, while SPN structures provide inherent parallelism, potentially leading to faster encryption/decryption on certain architectures.
 
-Otros investigadores han adoptado un enfoque cuantitativo para la definición de cifrados ligeros. Por ejemplo, en el estudio realizado por Cazorla et al.\cite{cazorla2013survey} se propusieron criterios específicos para categorizar un cifrado como ligero. Estos criterios abarcan atributos como el tamaño del bloque, el tamaño de la clave, las operaciones y la programación de claves. En el contexto de los cifrados de bloque ligeros, el término "ligero" denota un tamaño de bloque reducido (32, 48 o 64 bits) en contraste con los cifrados convencionales, que suelen tener tamaños de bloque más grandes (64 o 128 bits).
+This paper delves into a detailed exploration of FN and SPN structures in the context of lightweight cryptography. We will provide a comprehensive analysis of their design principles, operational workflows, and suitability for resource-constrained devices.
 
-El informe NIST IR 8114\cite{NIST}, trabajando hacia la estandarización de estos algoritmos, define la criptografía ligera como un subcampo de la criptografía que tiene como objetivo proporcionar soluciones adaptadas para dispositivos con recursos limitados.
+\begin{table}[ht]
+    \centering
+    \caption{Table of Abbreviations}
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Abbreviation} & \textbf{Definition} \\
+        \midrule
+        ASIC & Application-Specific Integrated Circuit \\
+        DULBC & Dynamic Ultra-Lightweight Block Cipher \\
+        FN & Feistel Network \\
+        FPGA & Field-Programmable Gate Array \\
+        GE & Gate Equivalents \\
+        IVLBC & InVolutive Lightweight Block Cipher \\
+        IoT & Internet of Things \\
+        KSA & Key Scheduling Algorithm \\
+        LBC & Lightweight Block Cipher \\
+        LBCCS & Lightweight Block encryption algorithm \\
+        & based on Combined Chaotic System \\
+        NIST & National Institute of Standards and Technology (USA) \\
+        P-box & Permutation box \\
+        RFID & Radio Frequency IDentification \\
+        S-box & Substitution box \\
+        SPN & Substitution-Permutation Network \\
+        $f$ & Function \\
+        XOR & eXclusive OR \\
+        \bottomrule
+    \end{tabular}
+    \label{table:abbreviations}
+\end{table}
+
+\section{State of the art}
+
+\begin{table*}[ht]
+    \centering
+    \caption{Lightweight Block Ciphers}
+    \begin{tabular}{lllll} 
+     \toprule
+     Algorithm & Key size & Block size & Structure & N. of rounds \\ 
+     \midrule
+     DULBC (Yang et al., 2022) \cite{DULBC} & 80/128 & 64 & SPN & 25/30 \\
+     GIFT (Yasmin and Gupta, 2023)\cite{GIFT}\cite{yasmin2023modified} & 128 & 64/128 & SPN & 28/40 \\
+     IVLBC (Huang et al., 2023)\cite{IVLBC} & 80/128 & 64 & SPN & 29 \\
+     LBC-IoT (Ramadan et al., 2021)\cite{LBC-IoT} & 80 & 32 & Feistel & 32 \\
+     SAND (Chen et al., 2021)\cite{SAND} & 128 & 64/128 & Feistel & 48/54 \\
+     LBCCS (Zhu et al., 2022)\cite{LBCCS} & 128 & 128 & Feistel & 20 \\
+     SCENERY (Feng and Li et al., 2022)\cite{SCENERY} & 80 & 64 & Feistel & 28  \\
+     \bottomrule
+    \end{tabular}
+    \label{table:ciphers}
+\end{table*}
+
+This section analyzes several LBCs. As shown in Table \ref{table:ciphers}, these algorithms are categorized based on their design principles. Each algorithm's performance is assessed considering factors like key size, block size, and the number of rounds employed during encryption. The rest of this section separates the LBCs by their underlying structure and mentions the main characteristics of each cipher.
+
+\subsection{SPN-based solutions}
+
+Yang et al. introduced DULBC, a dynamic SPN structure in which the specific encryption process changes based on the round keys. DULBC utilizes a unique approach where the round function isn't fixed. Each round selects one of four $f$ based on the first two bits of the round key, making it more resistant to attacks compared to static ciphers. This enhances security without significant hardware overhead. The proposed S-box offers good cryptographic properties with minimal logic gates, only 12 GEs. It consists of three NOR and XOR, one NAND and XNOR operations. leading to a simple inverse and efficient implementation. The authors highlight successful FPGA and ASIC implementations of DULBC, demonstrating its high throughput and relatively low area requirements. Security analysis confirms DULBC's resistance to various attacks, including differential attacks, linear attacks, and side-channel attacks. In conclusion, DULBC presents a promising solution for resource-limited environments due to its dynamic structure, efficient S-box design, and strong security profile.\cite{DULBC}
 
 
-En los últimos años, se han generado notables avances en los cifrados de bloques ligeros, con varias contribuciones importantes que han mejorado tanto la eficiencia como la seguridad. IVLBC, presentado por Huang et al.\cite{IVLBC} en 2022, se caracterizó por su tamaño de bloque de 64 bits y longitudes de clave de 80 y 128 bits, junto con 29 rondas de iteración. Al utilizar S-boxes involutivas livianas y permutaciones basadas en nibble, IVLBC permitió la reutilización de circuitos y códigos entre cifrado y descifrado.
+Yasmin and Gupta proposed a modification to the LBC GIFT. The main focus is on improving diffusion, the influence of a single bit change across the entire encrypted message. It improves upon the original GIFT by enhancing the Key Scheduling Algorithm (KSA) using bit-slicing substitution and involutive permutation, a permutation that, when applied twice, returns the original data (acts like its own inverse). By operating on multiple bits at once, in bit-slicing substitution, the larger data element (like a key) is sliced into smaller pieces. Each slice is then independently subjected to the substitution operation using the S-box. This allows for parallel processing of multiple bits simultaneously, taking advantage of the processor's architecture. By shuffling the bits and then applying the inverse permutation later, the original bit positions are obscured, making it harder to track how changes in the plaintext affect the ciphertext, leading to better diffusion and randomness in round keys.. This addresses the predictability issue of the original KSA.\cite{GIFT}\cite{yasmin2023modified}
 
-DULBC, propuesto también en 2022 por Yang et al.\cite{DULBC}, ofreció un cifrado ligero y dinámico con un tamaño de bloque de 64 bits y longitudes de clave de 80 y 128 bits. Este algoritmo empleó funciones redondas dependientes de claves y demostró una superioridad en la complejidad del criptoanálisis exponencial sobre las alternativas estáticas.
+Huang et al. proposes a new LBC named IVLBC specifically designed for unified encryption-decryption circuits in resource-limited environments. The design prioritizes high diffusion for strong encryption, involution, components return to their original state after two applications, for efficient implementation, and flexibility in hardware and software. To achieve these goals, IVLBC utilizes a Feistel structure with a tree-based design for a compact and efficient S-box, by using a tree-based structure with logic operations, the S-box in IVLBC can achieve the same functionality as a traditional table-based S-box while requiring less memory and potentially faster processing. Additionally, it employs a unique nibble-based involutive permutation to enhance diffusion. Using nibble-based operations can further enhance diffusion by disrupting patterns across larger chunks of data compared to single-bit permutations. A significant advantage of IVLBC is that decryption can reuse the same circuitry as encryption, leading to lower resource requirements.\cite{IVLBC}
 
-LBCCS, propuesto en el mismo año por Zhu et al.\cite{LBCCS}, ofrecía 20 rondas con bloques y claves de 128 bits. Este algoritmo construyó S-boxes altamente seguras y P-boxes difusivas utilizando sistemas caóticos combinacionales, a la vez que reducía la complejidad mediante una función de ronda adaptable. Sin embargo, la implementación en hardware de LBCCS requería un costo considerable, llegando a alcanzar los 2227 GE, lo que resalta los desafíos inherentes en la búsqueda de eficiencia, a pesar de las sofisticadas características criptográficas que presenta.
+\subsection{FN-based solutions}
 
-SCENERY, introducido también en 2022 por Feng y Li\cite{SCENERY}, se caracterizaba por su tamaño de bloque y clave de 64 y 80 bits respectivamente, con 28 rondas. Mediante su función de ronda que constaba de 8 S-boxes paralelas de 4 × 4 y una matriz de difusión binaria de 32 × 32, SCENERY demostró una eficiencia notable en requisitos de hardware, con un total de 1438 GE, posicionándose por debajo de otros algoritmos de cifrado comparables.
-
-En 2021, LBC-IoT surgió como un cifrado ultraligero propuesto por Ramadan et al.\cite{LBC-IoT}, con un tamaño de bloque de 32 bits, una longitud de clave de 80 bits y 32 rondas. LBC-IoT minimizó los costos de hardware mediante la utilización de S-boxes, desplazamientos laterales y XOR de 4 bits, lo que requirió solo 548 GE en hardware.
+Feng and Li propose a new lightweight block cipher called SCENERY. To achieve low-cost hardware and efficient software implementation, they use bit-slicing techniques in the design of their $f$. This means that instead of working the entire data blocks, each bit of the block is processed in a separate, smaller unit called a slice. The main benefits of this implementation are speed improvements on hardware that supports parallel execution and simpler logic circuits in hardware design, potentially reducing area and power consumption compared to traditional designs. The main drawback of bit-slicing is increased code complexity, taking into account that lightweight ciphers are not complex by definition, this isnt a problem. While a balanced Feistel structure offers good trade-offs between security, cost, and efficiency, it can suffer from slow diffusion. To address this, SCENERY incorporates a 32x32 binary matrix that can be implemented efficiently and improves diffusion speed. The paper also proposes a new KSA to tackle the issue of backward derivation of the master key. While not a complete solution, this method makes it more difficult compared to PRESENT's key scheduling and enhances the security of key expansion.\cite{SCENERY}
 
 
-\section{Técnicas para resolver el problema} \label{tecnicas}
-\textbf{Aquí deberá dar la descripción detallada de las técnicas que va a comparar y que por lo tanto va a implementar. Deberá crear dos secciones, una para cada técnica.}
+LBCSS is a lightweight block cipher that leverages a combined chaotic system for its design. This means that instead of relying on a single mathematical function that exhibit chaotic behavior, LBCSS uses multiple functions together. This chaotic system is used to create secure S-boxes, P-boxes, and keys for the encryption process. In terms of design specifics, LBCSS adopts a structure that enhances diffusion compared to the traditional generalized Feistel structure, but maintains a concise design. The cipher employs a non-linear round function created using a bit-slicing technique, this means the function introduces non-linear transformations on the data using operations like substitutions, rotations, or bitwise operations. These operations ensure a complex relationship between the original data and the encrypted output. This round function remains consistent across all encryption rounds to maintain low complexity. To prevent these consistent rounds from becoming too predictable, round constants are introduced to add variation. The authors argue that LBCSS offers sufficient security based on various tests, including resistance to different cryptanalysis methods and statistical testing. \cite{LBCCS}
+
+
+Chen et al. introduce a new LBC named SAND. The main characteristic of this cipher is that it employs AND, Rotation, and XOR operations (AND-RX) within a Feistel structure. SAND allows for easier security evaluation compared to other AND-RX ciphers. Traditionally, evaluating the security of AND-RX ciphers can be complex because these operations often work on individual bits within the data, making it difficult to leverage established analysis methods designed for S-boxes. This improvement is achieved by restricting the AND-RX operations to operate within small data units (nibbles). SAND makes its security analysis easier by working with nibbles instead of individual bits. This allows security researchers to use existing methods designed for analyzing S-boxes, which are a more familiar and well-studied component in cryptography. The authors highlight the benefits of SAND in terms of both security and performance. SAND achieves strong security under various attack scenarios, including differential and linear attacks. The paper also discusses the motivations behind the design of SAND. Existing solutions for ARX-based ciphers often rely on large S-boxes, which are not ideal for hardware implementation. SAND aims to bridge this gap by providing an AND-RX design with efficient hardware implementation and strong security guarantees through its novel S-box transformation approach.\cite{SAND}
+
+
+LBC-IoT incorporates two important cryptographic concepts: confusion and diffusion. Confusion scrambles the relationship between the original data and the encrypted data, while diffusion distributes the influence of a single bit change across the entire encrypted message. LBC-IoT achieves this by employing a combination of techniques,a compact S-box with high non-linearity properties for data substitution and two separate P-boxes to rearrange the data bits, further obfuscating the relationship between the original and encrypted data. It is well known that FN structures can lack diffusion due to the round $f$ being applied to only half of the data each round. LCB-IoT's solution to this problem is to apply a different P-box to each half of the data at the end of the rounds. The cipher utilizes simple operations within its core function and keeps the S-box size small. This approach minimizes the amount of processing power and memory required for implementation. Security-wise, LBC-IoT is resistant to brute-force attacks by adhering to NIST recommendations for key length. It uses an 80-bit key, which is too complex to crack through exhaustive searching methods. In essence, LBC-IoT offers a good balance between robust security and efficient implementation.\cite{LBC-IoT}
+
+\section{Techniques to implement} \label{tecnicas}
+In this section, we explore two cryptographic techniques commonly used for secure data encryption, Substitution-Permutation Networks and Feistel Networks. The focus of this section is to describe their structure, encryption process, decryption process and properties.\cite{zhong2024lightweight}
+\begin{table}[ht]
+    \centering
+    \caption{Notations of Substitution-Permutation Network}
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Notatios} & \textbf{Descriptions} \\
+        \midrule
+        $P$ & Plaintext \\
+        $C$ & Ciphertext \\
+        $K$ & Key \\
+        $S_i$ & Substitution Box (S-box) \\
+        $P$ & Permutation Box (P-box) \\
+        $F$ & Round Function \\
+        $\oplus$ & Bitwise XOR operation \\
+        \bottomrule
+    \end{tabular}
+    \label{table:spn}
+\end{table}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/FEISTEL-SPN.png}
+    \caption{Representation of a Feistel Network (left) and a Substitution-Permutation Network (right).}
+    \label{fig:FEISTEL-SPN}
+\end{figure*}
 
 \subsection{Substitution-Permutation Network}
+A Substitution-Permutation Network is a widely used design paradigm for block ciphers. It iterates a series of rounds, each consisting of two primary functions.
+Refer to Fig. \ref{fig:FEISTEL-SPN} for a representation of a standard SPN and its components, including S (S-box), diffusion (P-box), and the corresponding subkey $K_n$ for $n$ representing each round.
+\subsubsection{Substitution (S-boxes)}
+These non-linear operations replace individual bits or groups of bits in the data block with new values, introducing confusion into the encryption process.
+\subsubsection{Permutation (P-boxes)}
+These functions rearrange the bits within the data block, achieving diffusion by spreading the influence of a single bit change across the entire ciphertext.
+\subsubsection{Structure}
+
+The SPN iterates these operations over multiple rounds, controlled by a round function $F$.
+\subsubsection{Encryption Process (per round)}
+
+Let $P_i$ be the i-th plaintext block and $K_i$ be the i-th round key derived from the main key K. The encryption process for a single round can be described as follows.
+
+Substitution: Apply S-boxes to each sub-block of the data, where j iterates over the S-boxes and $\oplus$ denotes the bitwise XOR operation. 
+\begin{align*}
+    S_j(P_i \oplus K_i) \\
+\end{align*}
+Permutation: Permute the output of the S-boxes using the P-box.
+\begin{align*}
+    P(S_j(P_i \oplus K_i)) \\
+\end{align*}
+Output: The output of the P-box becomes the input for the next round or the final ciphertext if it's the last round.
+This process is repeated for a specific number of rounds.
+\subsubsection{Decryption}
+
+Decryption essentially reverses the encryption process using the same SPN structure but with different round keys. The round keys are typically derived from the main key in a specific order, with the last round key used for decryption being the first round key for encryption and so on.
+Let $C_i$ be the i-th ciphertext block and $K_i$ the round key for decryption, derived from K. The decryption process for a single round can be described as follows.
+
+Inverse Permutation: Apply the inverse of the P-box.
+\begin{align*}
+    P^{-1}(C_i) \\
+\end{align*}
+Inverse Substitution: Apply the inverses of the S-boxes.
+\begin{align*}
+    S_j^{-1}(P^{-1}(CT_i) \oplus K_i') \\
+\end{align*}
+Output: The output of the inverse S-boxes becomes the input for the next decryption round or the final plaintext if it's the last round.
+Similar to encryption, decryption is repeated for the specified number of rounds.
+\subsubsection{Properties}
+SPNs are a popular design choice for block ciphers due to their ability to achieve several key security properties.  SPNs achieve confusion by employing S-boxes that perform non-linear operations on the data, making the link between plaintext, key, and ciphertext highly complex. Additionally, P-boxes ensure diffusion by rearranging the data bits, such that a single change in the plaintext has a cascading effect on the final ciphertext. This characteristic, along with the avalanche effect (where minor variations in the plaintext or key lead to significant alterations in the ciphertext), helps resist attacks like differential cryptanalysis. Ultimately, the number of encryption rounds and the design of the S-boxes and P-boxes play a critical role in determining the overall strength and security of an SPN cipher.
+
+\begin{table}[ht]
+    \centering
+    \caption{Notations of Feistel Network}
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Notatios} & \textbf{Descriptions} \\
+        \midrule
+        $F$ & Feistel function \\
+        $L_n, R_n$ & Left and right halves of the data block at round $n$ \\
+        $L_{n+1}, R_{n+1}$ & Left and right halves of the data block after round $n$ \\
+        $K_n$ & Round key for round $n$ \\
+        $\oplus$ & Bitwise XOR operation \\
+        \bottomrule
+    \end{tabular}
+    \label{table:fn}
+\end{table}
+
 \subsection{Feistel Network}
+A Feistel Network, also known as a Feistel cipher, is a fundamental concept in cryptography. It's not a specific encryption algorithm itself, but rather a design framework used to build many powerful block ciphers. Refer to Fig \ref{fig:FEISTEL-SPN} for a representation of a standard Feistel Network (FN) and its round functions, denoted as $f$, receiving the data block $R_n$, representing the rightmost part of the full input, and the subkey $K_n$ for $n$ representing each round. $L_n$ represents the left part of the input.
+\subsubsection{Structure}
+A FN iterates a basic function, the Feistel function $F$, on the halves of the data block $(L_n, R_n)$ during each round.
+\subsubsection{Encryption Process (per round)}
+The network performs the following operations at each round $n$:
+\begin{align*}
+    L_{n+1} &= R_n \\
+    R_{n+1} &= L_n \oplus F(R_n, K_n) \\
+\end{align*}
+where $K_n$ is a round key. After the final round, the outputs are swapped to obtain the ciphertext $(C_1, C_2)$.
+\subsubsection{Decryption}
+The decryption process in a Feistel network is very similar to encryption, but the round keys are applied in reverse order. This allows the network to reverse the operations performed during encryption and recover the original data.
+\subsubsection{Properties}
+FNs boast several advantages for secure encryption. Each added round enhances the cipher's theoretical resistance to attacks. Under specific assumptions, their security can be mathematically proven based on the underlying Feistel function's strength. Additionally, the design offers flexibility by allowing customization of both the Feistel function and the number of rounds to achieve desired security levels. However, these networks also have drawbacks. The overall security hinges heavily on a strong Feistel function, and each round introduces processing overhead, potentially slowing down encryption and decryption.
 
-\section{Experimentos y Resultados} \label{experimentos}
-\textbf{En esta sección debe colocar los experimientos y resultados. Si el proyecto todavía no tiene resultados, debe eliminar esta sección.}
 
-\section{Conclusiones}
+\section{Conclusions}
 \textbf{Aquí debe colocar las conclusiones}
 
 \bibliographystyle{IEEEtran}
