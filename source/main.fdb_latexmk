@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex main"] 1714649785 "main.aux" "main.bbl" "main" 1714649786 0
+["bibtex main"] 1714658856 "main.aux" "main.bbl" "main" 1714671942 0
   "./IEEEtran.bst" 1712157485 57747 3d527d22adcaa16ca0abd0879d6fab1f ""
   "./bibliography/references.bib" 1714649766 14089 9f1d414a9f0885dc392a4bbe9129258d ""
-  "main.aux" 1714649786 4238 70f7cbbc36e10d3b3caf746065cb6e0c "pdflatex"
+  "main.aux" 1714671942 4314 628d57ddc52de3401bca1e2eaa4a65fe "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1714649785 "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" "main.pdf" "main" 1714649786 0
+["pdflatex"] 1714671941 "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" "main.pdf" "main" 1714671942 0
   "/etc/texmf/web2c/texmf.cnf" 1712154183 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" 1714649783 24642 e922fe5b46db9d984307461a1ab509f7 ""
+  "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" 1714671942 26762 f9977c290935e6db889c43701c2027d7 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm" 1136768653 4524 6bce29db5bc272ba5f332261583fee9c ""
@@ -95,9 +95,9 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1712155070 6524377 bfbd7332fdcc33f15d456f5e2174b669 ""
   "IEEEtran.cls" 1712157284 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
   "figures/FEISTEL-SPN.png" 1714648584 91544 1eb3e9e38224fa137e6cc5ecf7935865 ""
-  "main.aux" 1714649786 4238 70f7cbbc36e10d3b3caf746065cb6e0c "pdflatex"
-  "main.bbl" 1714649785 3499 fd47b2f36bd04d641964d9487a9e0506 "bibtex main"
-  "main.tex" 1714649783 24642 e922fe5b46db9d984307461a1ab509f7 ""
+  "main.aux" 1714671942 4314 628d57ddc52de3401bca1e2eaa4a65fe "pdflatex"
+  "main.bbl" 1714661319 4137 970c8d6c822f81884edad48e4d1f4e4e "bibtex main"
+  "main.tex" 1714671942 26762 f9977c290935e6db889c43701c2027d7 ""
   (generated)
   "main.aux"
   "main.log"
