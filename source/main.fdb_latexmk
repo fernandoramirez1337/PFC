@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex main"] 1714658856 "main.aux" "main.bbl" "main" 1714671942 0
+["bibtex main"] 1715796473 "main.aux" "main.bbl" "main" 1715797741 0
   "./IEEEtran.bst" 1712157485 57747 3d527d22adcaa16ca0abd0879d6fab1f ""
-  "./bibliography/references.bib" 1714649766 14089 9f1d414a9f0885dc392a4bbe9129258d ""
-  "main.aux" 1714671942 4314 628d57ddc52de3401bca1e2eaa4a65fe "pdflatex"
+  "./bibliography/references.bib" 1715796454 14543 680ce583802c7f8ec06fd419e9caf958 ""
+  "main.aux" 1715797741 3272 114cc8f92efb1fc505c92596253a6242 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1714671941 "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" "main.pdf" "main" 1714671942 0
+["pdflatex"] 1715797740 "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" "main.pdf" "main" 1715797741 0
   "/etc/texmf/web2c/texmf.cnf" 1712154183 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" 1714671942 26762 f9977c290935e6db889c43701c2027d7 ""
+  "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" 1715797740 26493 2210d2e7fe0a67df65b95ce41b866d10 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm" 1136768653 4524 6bce29db5bc272ba5f332261583fee9c ""
@@ -35,15 +35,7 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1136768653 1116 933a60c408fc0a863a92debe84b2d294 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb" 1248133631 37166 8ab3487cbe3ab49ebce74c29ea2418db ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1248133631 32734 69e00a6b65cedb993666e42eedb3d48f ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1248133631 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb" 1136849748 44729 811d6c62865936705a31c797a1d5dada ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb" 1136849748 44656 0cbca70e0534538582128f6b54593cca ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb" 1136849748 46026 6dab18b61c907687b520c72847215a68 ""
@@ -94,10 +86,9 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1712155064 360331 a3aa84f54636ac2cb42972e02327432c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1712155070 6524377 bfbd7332fdcc33f15d456f5e2174b669 ""
   "IEEEtran.cls" 1712157284 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "figures/FEISTEL-SPN.png" 1714648584 91544 1eb3e9e38224fa137e6cc5ecf7935865 ""
-  "main.aux" 1714671942 4314 628d57ddc52de3401bca1e2eaa4a65fe "pdflatex"
-  "main.bbl" 1714661319 4137 970c8d6c822f81884edad48e4d1f4e4e "bibtex main"
-  "main.tex" 1714671942 26762 f9977c290935e6db889c43701c2027d7 ""
+  "main.aux" 1715797741 3272 114cc8f92efb1fc505c92596253a6242 "pdflatex"
+  "main.bbl" 1715796473 4430 b3cd58920976404316451b8f3bbe6f73 "bibtex main"
+  "main.tex" 1715797740 26493 2210d2e7fe0a67df65b95ce41b866d10 ""
   (generated)
   "main.aux"
   "main.log"
