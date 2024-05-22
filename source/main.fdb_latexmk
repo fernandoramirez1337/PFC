@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex main"] 1715796473 "main.aux" "main.bbl" "main" 1715797741 0
+["bibtex main"] 1715832408 "main.aux" "main.bbl" "main" 1715832408 0
   "./IEEEtran.bst" 1712157485 57747 3d527d22adcaa16ca0abd0879d6fab1f ""
   "./bibliography/references.bib" 1715796454 14543 680ce583802c7f8ec06fd419e9caf958 ""
-  "main.aux" 1715797741 3272 114cc8f92efb1fc505c92596253a6242 "pdflatex"
+  "main.aux" 1715832408 3894 3f8fa8120149dd44d51f9cb608e60268 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1715797740 "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" "main.pdf" "main" 1715797741 0
+["pdflatex"] 1715832408 "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" "main.pdf" "main" 1715832408 0
   "/etc/texmf/web2c/texmf.cnf" 1712154183 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" 1715797740 26493 2210d2e7fe0a67df65b95ce41b866d10 ""
+  "/home/traintagger/Documents/2024-01/Proyecto de Final de Carrera I CCOMP8-1/repo/source/main.tex" 1715832407 27383 ffcfed4ec60d87d7122033fe2a3c314a ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm" 1136768653 4524 6bce29db5bc272ba5f332261583fee9c ""
@@ -86,9 +86,12 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1712155064 360331 a3aa84f54636ac2cb42972e02327432c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1712155070 6524377 bfbd7332fdcc33f15d456f5e2174b669 ""
   "IEEEtran.cls" 1712157284 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "main.aux" 1715797741 3272 114cc8f92efb1fc505c92596253a6242 "pdflatex"
-  "main.bbl" 1715796473 4430 b3cd58920976404316451b8f3bbe6f73 "bibtex main"
-  "main.tex" 1715797740 26493 2210d2e7fe0a67df65b95ce41b866d10 ""
+  "figures/FEISTEL-SPN.png" 1714648584 91544 1eb3e9e38224fa137e6cc5ecf7935865 ""
+  "figures/GIFT-ROUND.png" 1715831055 19398 0adb25450fc50d7c70e02d2e03b0b483 ""
+  "figures/SAND-ROUND.png" 1715831061 17038 0eda6e42da912d9dd4e6397c7de0d1c5 ""
+  "main.aux" 1715832408 3894 3f8fa8120149dd44d51f9cb608e60268 "pdflatex"
+  "main.bbl" 1715832408 4430 b3cd58920976404316451b8f3bbe6f73 "bibtex main"
+  "main.tex" 1715832407 27383 ffcfed4ec60d87d7122033fe2a3c314a ""
   (generated)
   "main.aux"
   "main.log"
