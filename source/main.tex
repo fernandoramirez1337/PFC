@@ -17,7 +17,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Securing Data in Low-Resource Systems: Lightweight Block Cryptography Strategies}
+\title{Securing Data in Low-Resource Environments: Lightweight Block Ciphers}
 
 
 \author{\IEEEauthorblockN{Fernando Ramirez Arredondo}
@@ -49,7 +49,7 @@ The Internet of Things (IoT) has spawned an era of interconnected devices, gener
 
 \begin{table}[ht]
     \centering
-    \caption{Cryptographic Approaches on Different Devices}
+    \caption{Cryptographic Approaches on Different Devices\cite{IoT_1}}
     \begin{tabular}{ll}
         \toprule
         \textbf{Device} & \textbf{Cryptography} \\
@@ -71,7 +71,7 @@ Traditional ciphers are categorized into two classes, asymmetric and symmetric. 
 \begin{figure*}
     \centering
     \includegraphics[width=\columnwidth]{figures/FEISTEL-SPN.png}
-    \caption{Generalization of a Feistel Network (left) and a Substitution-Permutation Network (right).}
+    \caption{Generalization of a Feistel Network (left) and a Substitution-Permutation Network (right)\cite{de2006introduction}.}
     \label{fig:FEISTEL-SPN}
 \end{figure*}
 
@@ -159,14 +159,15 @@ LBC-IoT incorporates two important cryptographic concepts, confusion and diffusi
 \end{table*}
 
 Lightweight block ciphers are categorized based on their genereal metrics and structure. The performance of each algorithm is evaluated based on the following metrics.
-Block Size, to save on processing power and battery life in IoT devices, block ciphers chop up the data they encrypt into small, pre-defined chunks. The size of these chunks directly impacts how much energy the encryption process consumes. As shown in Table \ref{table:ciphers}, GIFT, SAND and LBCCS have the largest block size of 128 bits while LBC-IoT adopts the smallest block size of only 32 bits. Most surveyed ciphers employ 64-bit blocks.
-Key size, The number of bits in a cryptographic key, known as the key size, directly affects security. Bigger keys are like more complex locks, offering stronger protection however, they require more effort (processing power and energy) to use. NIST suggests a minimum key size of 80 bits for basic defense against brute-force attacks, where attackers try every possible key combination\cite{barker2018transitioning}. Reflecting this trade-off, none of the ciphers in Table \ref{table:ciphers} exceed 128 bits or fall below 80 bits, opting for one of these two key sizes.
-Number of rounds, compared to conventional ciphers, lightweight block ciphers prioritize simplicity to work on devices with limited resources. Unlike conventional ciphers, they achieve strong security through multiple rounds of processing. While each extra round makes the cipher harder to crack, it also slows down the encryption process. This approach ensures that breaking the cipher becomes more effort than simply trying every possible key.
+\begin{itemize}
+    \item \textbf{Block Size}: To save on processing power and battery life in IoT devices, block ciphers chop up the data they encrypt into small, pre-defined chunks. The size of these chunks directly impacts how much energy the encryption process consumes. As shown in Table \ref{table:ciphers}, GIFT, SAND and LBCCS have the largest block size of 128 bits while LBC-IoT adopts the smallest block size of only 32 bits. Most surveyed ciphers employ 64-bit blocks.
+    \item \textbf{Key Size}: The number of bits in a cryptographic key, known as the key size, directly affects security. Bigger keys are like more complex locks, offering stronger protection however, they require more effort (processing power and energy) to use. NIST suggests a minimum key size of 80 bits for basic defense against brute-force attacks, where attackers try every possible key combination\cite{barker2018transitioning}. Reflecting this trade-off, none of the ciphers in Table \ref{table:ciphers} exceed 128 bits or fall below 80 bits, opting for one of these two key sizes.
+    \item \textbf{Number of rounds}: Compared to conventional ciphers, lightweight block ciphers prioritize simplicity to work on devices with limited resources. Unlike conventional ciphers, they achieve strong security through multiple rounds of processing. While each extra round makes the cipher harder to crack, it also slows down the encryption process. This approach ensures that breaking the cipher becomes more effort than simply trying every possible key.
+\end{itemize}
 
 \section{Techniques to implement} \label{tecnicas}
 
-This section goes deeper into two of the lightweight block cipher techniques introduced earlier, SAND and GIFT. The remainder of this section will outline their encryption and decryption processes, along with the rationale behind chosing them for implementation. NOTE: Implementations will follow NIST Recommendation for Block
-Cipher Modes of Operation\cite{dworkin2001recommendation}.
+This section goes deeper into two of the lightweight block cipher techniques introduced earlier, SAND and GIFT. The remainder of this section will outline their encryption and decryption processes, along with the rationale behind chosing them for implementation. NOTE: Implementations will follow NIST Recommendation for Block Cipher Modes of Operation\cite{dworkin2001recommendation}.
 
 \subsection{GIFT}
 
@@ -179,7 +180,7 @@ This cipher operates in rounds, with each round consisting of five steps, S-box 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\columnwidth]{figures/GIFT-ROUND.png}
-    \caption{Representation of the encryption round function of GIFT.}
+    \caption{Representation of the encryption round function of GIFT\cite{yasmin2023modified}.}
     \label{fig:GIFT-}
 \end{figure}
 
@@ -195,13 +196,118 @@ The round function of the SAND cipher depends on a mix of AND, rotation, and XOR
 \begin{figure}
     \centering
     \includegraphics[width=0.9\columnwidth]{figures/SAND-ROUND.png}
-    \caption{Representation of the encryption round function of SAND.}
+    \caption{Representation of the encryption round function of SAND\cite{SAND}.}
     \label{fig:SAND-}
 \end{figure}
 
 
 \subsubsection{Reasons for implementation}
 SAND leverages a novel design approach that restricts its AND-RX operations to work within 4-bit nibbles. This unique approach allows SAND to be represented equivalently using a 4x8 synthetic S-box (SSb). This conversion unlocks the advantage of employing established S-box-based security evaluation methods. Furthermore, the authors claim that the inherent bitslice structure combined with AND-RX operations positions SAND among the top contenders for efficient software implementation. The simplicity of employing AND-RX operations and the robustness of well-developed S-box-based security evalution methods and tools appear to be a promising advancement.
+
+\section{Implementation}
+
+This section details the implementation of the SAND-128 and GIFT-128 lightweight ciphers in both software and hardware. The software implementation is carried out in C, while the hardware implementation is performed using Verilog and simulated with ModelSim and QuestaSim. The primary metric used to judge the performance of the hardware implementations is the Gate Equivalent (GE). For the software implementations, execution time, memory usage, and throughput are the key metrics.
+
+\subsection{Software Implementation}
+
+The software implementation involves writing the SAND-128 and GIFT-128 ciphers in C. This subsection describes the process and key considerations for software development.
+
+\subsubsection{Algorithm Specification}
+
+The specifications of SAND-128 and GIFT-128 were studied from their respective academic papers. This study included understanding the key schedule, as well as the encryption and decryption processes.
+
+\subsubsection{Code Development}
+
+Using the algorithm specifications, the encryption and decryption functions for both ciphers were implemented in C. The operations of each cipher, such as substitutions, permutations, key scheduling, and round functions, were translated into C code.
+
+\begin{verbatim}
+// GIFT-128 encryption function
+void GIFT128_ENC(uint8_t plaintext[16],
+                 uint8_t key[16],
+                 uint8_t ciphertext[16]){
+    // Initialization and key schedule
+    // Perform encryption rounds
+    // Output ciphertext
+}
+//
+\end{verbatim}
+
+\subsubsection{Testing and Validation}
+
+The implemented C code was tested using test vectors provided in the original cipher specifications and verified against the test vectors in NIST Special Publication 800-38A 2001 ED\cite{dworkin2001recommendation}, which provides recommendations for block cipher modes of operation. The selected encryption mode is the electronic codebook (ECB). The main drawback lies in its limited diffusion capability, as it does not effectively conceal data patterns when encrypting identical plaintext blocks, resulting in identical ciphertext blocks. This critical disadvantage can be ignored when the plaintext blocks are selected in a testing environment, leaving ECB as the optimal encryption mode because of its simplicity. These tests ensured that the software implementation produced correct outputs for known inputs.
+
+\begin{verbatim}
+// NIST test vectors
+plain-text:
+    6bc1bee22e409f96e93d7e117393172a
+    ae2d8a571e03ac9c9eb76fac45af8e51
+    30c81c46a35ce411e5fbc1191a0a52ef
+    f69f2445df4f9b17ad2b417be66c3710
+key:
+    2b7e151628aed2a6abf7158809cf4f3c
+//
+\end{verbatim}
+
+\subsubsection{Performance Evaluation}
+
+The performance of the software implementation was evaluated based on the following metrics:
+
+\begin{itemize}
+    \item \textbf{Execution Time}: The time taken to perform encryption and decryption operations was measured using high-resolution timers.
+    \item \textbf{Memory Usage}: The memory consumption during the encryption and decryption processes was analyzed.
+    \item \textbf{Throughput}: The number of operations processed per unit time was calculated to determine the efficiency of the implementation.
+\end{itemize}
+
+\subsection{Hardware Implementation}
+
+The hardware implementation of SAND-128 and GIFT-128 was performed using Verilog. The design was simulated using ModelSim and QuestaSim to ensure correctness and performance. The designs were evaluated based on the GEs, which measures the area complexity of the hardware implementation.
+
+\subsubsection{Design Specification}
+
+Similar to the software implementation, the hardware implementation began with a study of the algorithm specifications. This study included understanding the datapath, control logic, and timing requirements of the ciphers.
+
+\subsubsection{Verilog Code Development}
+
+The ciphers were described using Verilog HDL. The design included modules for the key schedule, round functions, and overall control logic.
+
+\subsubsection{Simulation and Verification}
+
+The Verilog designs were simulated using ModelSim and QuestaSim. Testbenches were created to apply test vectors to the design and compare the output with expected results.
+
+\begin{verbatim}
+// Testbench for GIFT-128
+module GIFT128_Testbench;
+    reg [127:0] plaintext;
+    reg [127:0] key;
+    wire [127:0] ciphertext;
+
+    GIFT128_Encrypt uut (
+        .plaintext(plaintext),
+        .key(key),
+        .ciphertext(ciphertext)
+    );
+
+    initial begin
+        // Apply test vectors
+        plaintext = /* test vector */;
+        key = /* test vector */;
+        #10; // Wait for encryption 
+        $display("Ciphertext: %h",
+                 ciphertext);
+        // Check if the output matches 
+        // the expected result
+    end
+endmodule
+//
+\end{verbatim}
+
+\subsubsection{Synthesis and Optimization}
+
+After verifying correctness through simulation, the Verilog code was synthesized using FPGA synthesis tools. This step involved optimizing the design for area and speed, with a focus on minimizing the GEs to ensure a lightweight implementation.
+
+
+\subsubsection{Implementation on FPGA (not sure)}
+
 
 \section{Conclusions}
 Feistel networks and Substitution-Permutation networks are both fundamental structures for designing lightweight block ciphers. While they share some similarities, they have distinct advantages and disadvantages.
@@ -210,7 +316,7 @@ Feistel networks offer inherent invertibility, meaning decryption is straightfor
 
 Substitution-Permutation networks can potentially achieve higher throughput due to their inherent parallelism, making them attractive for hardware implementations with multiple processing units. SPN ciphers are a popular design choice for block ciphers due to their ability to achieve several key security properties.  SPN ciphers achieve confusion by employing S-boxes that perform non-linear operations on the data, making the link between plaintext, key, and ciphertext highly complex. Additionally, P-boxes ensure diffusion by rearranging the data bits, such that a single change in the plaintext has a cascading effect on the final ciphertext. This characteristic, along with the avalanche effect (where minor variations in the plaintext or key lead to significant alterations in the ciphertext), helps resist attacks like differential cryptanalysis. Ultimately, the number of encryption rounds and the design of the S-boxes and P-boxes play a critical role in determining the overall strength and security of an SPN cipher.
 
-The best choice between a Feistel network and a Substitution-Permutation network depends on the specific application and design goals. If ease of decryption and hardware limitations are key concerns, a Feistel network might be preferable. If maximizing encryption speed on parallel hardware is a priority, a Substitution-Permutation network might be a better choice.
+Making the best choice between a Feistel network and a Substitution-Permutation network depends on the specific application and design goals. If ease of decryption and hardware limitations are key concerns, a Feistel network might be preferable. If maximizing encryption speed on parallel hardware is a priority, a Substitution-Permutation network might be a better choice.
 
 Additionally, both can be further enhanced with techniques like bit-slicing, custom S-boxes, combined chaotic systems, and even including modifications to the underlying structure to improve security, performance, or both.
 
