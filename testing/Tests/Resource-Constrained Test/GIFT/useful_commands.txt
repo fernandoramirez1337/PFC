@@ -1,0 +1,35 @@
+gcc -o test test_papi.c GIFT/GIFT.c -lpapi
+gcc -std=c99 -o test test.c GIFT/GIFT.c 
+
+Measuring RAM
+valgrind --tool=massif ./test
+ms_print massif.out.
+
+Measuring ROM
+size test
+
+Latency: Latency denotes the number of clock cycles required to
+compute each plaintext/ciphertext block.
+
+Memory: Memory includes the RAM and ROM required by the
+lightweight ciphers, typically measured in bytes. RAM stores interme-
+diate values during computation, while ROM stores static data such as
+code and keys.
+
+Throughput: Throughput refers to the number of bits processed per
+second by encryption/decryption at a given frequency F. Throughput
+T is computed as: T = F × B
+                        N
+where B is the block size in bits, and N is the number of clock cycles per
+block. The common hardware frequency is 100 kHz, and the software
+frequency is 4 MHz. Conventional ciphers offer higher throughput but
+require more energy and gate equivalent costs. Lightweight ciphers aim
+to provide higher throughput under constrained resources.
+
+Efficiency: Efficiency evaluates the relationship between perfor-
+mance and implementation cost, categorized into hardware and soft-
+ware efficiency. Generally, higher efficiency values are preferable.
+Software efficiency follows:
+E = T
+    s
+where T is throughput in kbps and S is the code size in kB.
