@@ -1,16 +1,16 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
-\usepackage{cite}
+
 \usepackage{amsmath,amssymb,amsfonts}
+\usepackage[english]{babel}
 \usepackage{algorithmic}
+\usepackage{multicol}
+\usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
-\usepackage[english]{babel}
-\usepackage{booktabs} % For improved table formatting
-\usepackage{array} % For improved column formatting
-\usepackage{multicol} % For multi-column formatting
+\usepackage{array}
+\usepackage{cite}
 \usepackage{url}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
@@ -36,16 +36,16 @@ ytupac@ucsp.edu.pe}}
 \maketitle
 
 \begin{abstract}
-    Ensuring communication security for devices with limited resources is vital in the contemporary landscape. This work classifies seven state-of-the-art lightweight block ciphers designed for such devices. These ciphers offer efficient encryption for data security while minimizing resource consumption. Our analysis focuses on the two main categories of lightweight block ciphers, Substitution-Permutation Networks and Feistel Networks. We explore the key strategies these ciphers leverage to achieve state-of-the-art performance. In particular, the analysis reveals that two prominent techniques are employed, bit-slicing and structure modification. These techniques play a significant role in optimizing the ciphers for resource-constrained environments.
+    Ensuring communication security for devices with limited resources is vital in the contemporary landscape. This work classifies seven state-of-the-art lightweight block ciphers designed for such devices. These ciphers offer efficient encryption for data security while minimizing resource consumption. This work focuses on the two main categories of lightweight block ciphers, Substitution-Permutation Networks and Feistel Networks. The experiments reveals that Feistel Networks excel with limited resources and when decryption implementation is needed, while Substitution-Permutation Networks excel at execution time.
 \end{abstract}
 
 \begin{IEEEkeywords}
 iot, feistel, substitution-permutation, resource-constrained, lightweight, cryptography
 \end{IEEEkeywords}
 
-\section{Introduction}
+\section{Introduction}\label{sec:intro}
 
-The Internet of Things (IoT) has spawned an era of interconnected devices, generating vast amounts of data and transforming our interaction with the physical world. This connectivity presents a growing security challenge when the devices generating or transmitting sensitive data lack the resources to perform up-to-standard encryption processes. As Thakor et al. \cite{IoT_1} categorize, IoT devices fall into two resource-based groups, resource-rich devices like servers, personal computers, and smartphones, and resource-constrained devices like sensor nodes, RFID tags, and actuators (Table \ref{table:crypto_devices}).
+The development of Internet of Things (IoT) technology started an era of interconnected devices, collecting data from the physical world and transforming our interaction with it. This connectivity presents a security challenge when the devices generating or transmitting sensitive data lack the resources to perform up-to-standard encryption processes. As Thakor et al. \cite{IoT_1} categorize, IoT devices fall into two resource-based groups, resource-rich devices like servers, personal computers, and smartphones, and resource-constrained devices like sensor nodes, radio-frequency identification (RFID) tags, and actuators. See Table \ref{table:crypto_devices} for the categorization.
 
 \begin{table}[ht]
     \centering
@@ -61,12 +61,10 @@ The Internet of Things (IoT) has spawned an era of interconnected devices, gener
     \label{table:crypto_devices}
 \end{table}
 
-This challenge is further amplified by the evolution of IoT, which has transitioned from smaller networks to wide area networks, leading to a rapid growth in the number of interconnected devices. As IoT applications increase, a substantial amount of sensitive data is exchanged, raising concerns about privacy and security. Increased device interconnectivity further intensifies these concerns, potentially exposing new vulnerabilities with each additional device. In a landscape with billions of interconnected devices, even a single security flaw can be exploited on a massive scale.
-
+This challenge is further amplified by the evolution of IoT, which has transitioned from smaller networks to wide area networks, leading to a rapid growth in the number of interconnected devices. As IoT applications increase, a substantial amount of sensitive data is exchanged, raising concerns about privacy and security. Increased device interconnectivity further intensifies these concerns, potentially exposing new vulnerabilities with each additional device. In a landscape with billions of interconnected devices, a single security flaw can be exploited on a massive scale.
 Just as physical security measures like locks, safes, and opaque envelopes protect our valuables, cryptography serves as the digital equivalent, safeguarding the integrity and confidentiality of data in our online activities. This work aims to contribute to the application of cryptography for resource-constrained devices in the ever-expanding IoT landscape, where robust security solutions are essential to trust the activities and processes we reproduce or create from scratch in the digital world. 
-Traditional cryptography, often computationally intensive, is impractical for these resource-constrained devices.  Lightweight cryptography emerges as a modern solution, specifically designed for devices with limitations in memory, processing power, and energy consumption. It prioritizes low computational complexity and a small memory footprint\cite{zhong2024lightweight}.
 
-Traditional ciphers are categorized into two classes, asymmetric and symmetric. While asymmetric ciphers offer enhanced security features, they require greater computational resources and often have higher implementation costs. Consequently, they are less suitable for resource-constrained devices. Lightweight ciphers prefer the symmetric approach due to being generally faster and requiring less computational power. Following this same line of thinking, the vast majority of these ciphers are designed to operate on fixed-sized blocks of data rather than streams of data, as can be seen in NIST latest Lightweight Cryptography Standardization Process\cite{NIST}. It is for this reason that this study focuses on block ciphers, specifically on two fundamental structures employed in lightweight block ciphers, Feistel Networks and Substitution-Permutation Networks.
+Traditional cryptography, often computationally intensive, is impractical for resource-constrained devices. Lightweight cryptography emerges as a modern solution, specifically designed for devices with limitations in memory, processing power, and energy consumption. It prioritizes low computational complexity and a small memory footprint\cite{zhong2024lightweight}. Ciphers are divided into two main categories, asymmetric and symmetric. While asymmetric ciphers offer enhanced security features, they require greater computational resources and often have higher implementation costs. Consequently, they are less suitable for resource-constrained devices. Lightweight ciphers lean into the symmetric approach due to being generally faster and requiring less computational power. Following this same line of thinking, the vast majority of these ciphers are designed to operate on fixed-sized blocks of data rather than streams of data, as can be seen in NIST latest Lightweight Cryptography Standardization Process\cite{NIST}. It is for this reasons that this study focuses on block ciphers, specifically on two fundamental structures employed in lightweight block ciphers (LBC), Feistel Network (FN) and Substitution-Permutation Network (SPN).
 
 \begin{figure*}
     \centering
@@ -75,69 +73,45 @@ Traditional ciphers are categorized into two classes, asymmetric and symmetric. 
     \label{fig:FEISTEL-SPN}
 \end{figure*}
 
-The Feistel Network (FN) stands as a fundamental structure in block cipher design. It offers a modular and efficient approach to encryption, employing multiple rounds of data processing. In each round, a half-block of data is processed using a round function, often incorporating non-linear substitutions and permutations. The output of this function is then combined with the other half-block using an XOR operation, creating a dependency between rounds that improves the overall security\cite{FEISTEL}.
+The Feistel Network offers a modular and efficient approach to encryption, employing multiple rounds of data processing. In each round, a half-block of data is processed using a round function, often incorporating non-linear substitutions and permutations (operations do not follow a simple proportional relationship). The output of this function is then combined with the other half-block using an XOR operation, creating a dependency between rounds that improves the overall security\cite{FEISTEL}.
 
-The Substitution-Permutation Network (SPN) is another block cipher structure. It relies on a series of substitution and permutation stages. Substitution box (S-box) replaces data bits with new values, introducing non-linearity to confuse potential attackers. Permutation box (P-box) rearranges the data bits, making it challenging to discern the original data\cite{heys1996substitution}. Refer to Fig.\ref{fig:FEISTEL-SPN} for a general view of both FN and SPN structures.
+The Substitution-Permutation Network relies on a series of substitution and permutation stages. Substitution box (S-box) replaces data bits, introducing non-linearity to confuse potential attackers. Permutation box (P-box) rearranges the data bits, making it challenging to discern the original data\cite{heys1996substitution}. Refer to Fig.\ref{fig:FEISTEL-SPN} for a general view of both FN and SPN structures.
 
 Both FN and SPN structures offer advantages in lightweight cryptography. FN structures are known for their modularity and ease of implementation, while SPN structures provide inherent parallelism, potentially leading to faster encryption/decryption on certain architectures.
+This paper makes an exploration of FN and SPN structures in the context of lightweight cryptography. We will provide analysis of their design principles, operational workflows, and suitability for resource-constrained devices.
 
-\begin{table}[ht]
-    \centering
-    \caption{Table of Abbreviations}
-    \begin{tabular}{ll}
-        \toprule
-        \textbf{Abbreviation} & \textbf{Definition} \\
-        \midrule
-        ASIC & Application-Specific Integrated Circuit \\
-        DULBC & Dynamic Ultra-Lightweight Block Cipher \\
-        FN & Feistel Network \\
-        FPGA & Field-Programmable Gate Array \\
-        IVLBC & InVolutive Lightweight Block Cipher \\
-        IoT & Internet of Things \\
-        KSA & Key Scheduling Algorithm \\
-        LBC & Lightweight Block Cipher \\
-        LBCCS & Lightweight Block encryption algorithm \\
-        & based on Combined Chaotic System \\
-        NIST & National Institute of Standards and Technology (USA) \\
-        P-box & Permutation box \\
-        RFID & Radio Frequency IDentification \\
-        S-box & Substitution box \\
-        SPN & Substitution-Permutation Network \\
-        Ssb & Synthetic s-box \\
-        $f$ & Function \\
-        \bottomrule
-    \end{tabular}
-    \label{table:abbreviations}
-\end{table}
+Section \ref{sec:art}.
+Section \ref{sec:tec}.
+Section \ref{sec:imp}.
+Section \ref{sec:exp}.
+Section \ref{sec:conc}.
 
-This paper makes an exploration of FN and SPN structures in the context of lightweight cryptography. We will provide analysis of their design principles, operational workflows, and suitability for resource-constrained devices. Refer to Table \ref{table:abbreviations} for the full list of abbreviations.
-
-\section{State of the art}
+\section{State of the art}\label{sec:art}
 
 This section explores lightweight block ciphers, introducing them based on their structure and the techniques that generate their state-of-the-art performance for resource-constrained devices.
 
 \subsection{SPN-based solutions}
 
-Yang et al. introduced Dynamic Ultra-Lightweight Block Cipher (DULBC), a dynamic SPN structure in which the specific encryption process changes based on the round keys. DULBC utilizes a unique approach where the round function is not fixed. Each round selects one of four $f$s based on the first two bits of the round key, making it more resistant to attacks compared to static ciphers. This enhances security without significant hardware overhead. The proposed S-box offers good cryptographic properties with minimal cost. It consists of three NOR and XOR, one NAND and XNOR operations. leading to a simple inverse and efficient implementation. The authors highlight successful FPGA and ASIC implementations of DULBC, demonstrating its high throughput and relatively low area requirements. Security analysis confirms the resistance of DULBC to various attacks, including differential attacks, linear attacks, and side-channel attacks. In conclusion, DULBC presents a promising solution for resource-limited environments due to its dynamic structure, efficient S-box design, and strong security profile\cite{DULBC}.
+Dynamic Ultra-Lightweight Block Cipher (DULBC) employs a dynamic SPN structure in which the specific encryption process changes based on the round keys, generating a non-fixed round function. Each round selects one of four functions ($f$s) based on the first two bits of the round key, enhancing security without significant hardware overhead. The proposed S-box consists of three NOR and XOR, one NAND and XNOR operations, leading to a simple inverse and efficient implementation and good cryptographic properties with minimal cost. The authors highlight successful Field Programmable Gate Array (FPGA) and Application-Specific Integrated Circuit (ASIC) implementations of DULBC, demonstrating high throughput (number of operations processed per unit time) and relatively low area requirements (number of transistors needed to build the hardware that performs the encryption operations). Security analysis confirms the resistance of DULBC to various attacks, including differential attacks, linear attacks, and side-channel attacks.
 
 
 Yasmin and Gupta proposed a modification to the LBC GIFT\cite{GIFT}. The main focus is on improving diffusion, how a single bit change in the message spreads throughout the ciphertext. It improves upon the original GIFT by enhancing the Key Scheduling Algorithm (KSA) using bit-slicing substitution and involutive permutation. By operating on multiple bits at once, in bit-slicing substitution, the larger data element is sliced into smaller pieces. Each slice is then independently subjected to the substitution operation using the S-box. This enables the concurrent processing of multiple bits at once, leveraging the architecture of the processor. By shuffling the bits and then applying the inverse permutation later, the original bit positions are obscured, making it harder to track how changes in the plaintext affect the ciphertext, leading to better diffusion and randomness in round keys. This addresses the predictability issue of the original KSA\cite{yasmin2023modified}.
 
 
-Huang et al. presented a new LBC named InVolutive Lightweight Block Cipher (IVLBC) specifically designed for unified encryption-decryption in resource-limited environments. The design prioritizes high diffusion for strong encryption, involution (meaning components return to their original state after two applications) for efficient implementation and flexibility in hardware and software implementations. To achieve these goals, IVLBC utilizes a Feistel structure with a tree-based design for a compact and efficient S-box, by using a tree-based structure with logic operations, the S-box in IVLBC can achieve the same functionality as a traditional table-based S-box while requiring less memory and potentially faster processing. Additionally, it employs a unique nibble-based involutive permutation to enhance diffusion. Using nibble-based operations can further enhance diffusion by disrupting patterns across larger chunks of data compared to single-bit permutations. Decryption can reuse the same circuitry as encryption, leading to lower resource requirements\cite{IVLBC}.
+InVolutive Lightweight Block Cipher (IVLBC) is LBC designed for unified encryption-decryption in resource-limited environments. The design prioritizes high diffusion (influence of a single bit change in the plaintext over the ciphertext) for strong encryption, involution (components return to their original state after two applications) for efficient implementation and flexibility in hardware and software implementations. To achieve these goals, IVLBC utilizes a FN structure with a tree-based design for a compact and efficient S-box, by using a tree-based structure with logic operations, the S-box in IVLBC can achieve the same functionality as a traditional table-based S-box while requiring less memory and potentially faster processing. Additionally, it employs a unique nibble-based involutive permutation to enhance diffusion. Using nibble-based operations can further enhance diffusion by disrupting patterns across larger chunks of data compared to single-bit permutations. Decryption can reuse the same circuitry as encryption, leading to lower resource requirements\cite{IVLBC}.
 
 \subsection{FN-based solutions}
 
-Feng and Li introduced a new LBC called SCENERY. To achieve low-cost hardware and efficient software implementation, they use bit-slicing techniques in the design of their $f$. This means that each bit of the data block is processed in a separate, smaller unit called a slice, rather than working with entire blocks. The main benefits of this implementation are speed improvements on hardware that supports parallel execution and simpler logic circuits in hardware design, potentially reducing area and power consumption compared to traditional designs. While bit-slicing increases code complexity, lightweight ciphers are not complex by definition, so this is not a significant issue. To address the slow diffusion issue that can occur with a balanced Feistel structure, SCENERY incorporates a 32x32 binary matrix that can be implemented efficiently and improves diffusion speed. The authors also propose a new KSA to tackle the issue of backward derivation of the master key. While not a complete solution, this method makes it more difficult compared to the key scheduling of PRESENT\cite{PRESENT} and enhances the security of key expansion.\cite{SCENERY}
+SCENERY is a LBC that makes use of bit-slicing in the round function design to achieve low-cost hardware and efficient software implementations. Bit-slicing is a technique that operates each bit of the data block in a separate, smaller unit called a slice, rather than working with entire blocks. The main benefits of this implementation are speed improvements on hardware that supports parallel execution and simpler logic circuits in hardware design, potentially reducing area and power consumption compared to traditional designs. While bit-slicing increases code complexity, lightweight ciphers are not complex by definition, so this is not a significant issue if executed correctly. To address the slow diffusion issue that can occur with a FN, SCENERY incorporates a 32x32 binary matrix used to operate in the 64-bit blocks that can be implemented efficiently and improves diffusion speed. The authors propose a new Key Scheduling Algorithm (KSA) to tackle the issue of backward derivation of the master key. While not a complete solution, this method makes it more difficult compared to the key scheduling of PRESENT\cite{PRESENT} and enhances the security of key expansion.\cite{SCENERY}
 
 
-Lightweight Block encryption algorithm based on Combined Chaotic System (LBCSS) is a LBC that leverages a combined chaotic system for its design. This means that instead of relying on a single mathematical function that exhibit chaotic behavior, LBCSS uses multiple functions together. This chaotic system is used to create secure S-boxes, P-boxes, and keys for the encryption process. In terms of design specifics, LBCSS adopts a structure that enhances diffusion compared to the traditional generalized Feistel structure, but maintains a concise design. The cipher employs a non-linear round function created using a bit-slicing technique, this means the function introduces non-linear transformations on the data using operations like substitutions, rotations, or bitwise operations. These operations ensure a complex relationship between the original data and the encrypted output. This round function remains consistent across all encryption rounds to maintain low complexity. To prevent these consistent rounds from becoming too predictable, round constants are introduced to add variation. The authors argue that LBCSS offers sufficient security based on various tests, including resistance to different cryptanalysis methods and statistical testing\cite{LBCCS}.
+Lightweight Block encryption algorithm based on Combined Chaotic System (LBCSS) is a LBC that uses a combined chaotic system for encryption and decryption. This means that instead of relying on a single mathematical function that exhibit chaotic behavior, LBCSS uses multiple functions together. This chaotic system is used to create secure S-boxes, P-boxes, and keys for the encryption process. LBCSS makes use a structure that enhances diffusion compared to the traditional FN, but maintains a concise design. The round function is created using bit-slicing techniques. Operations like substitutions, rotations, or bitwise operations introduce non-linear transformations on the data. These operations ensure a complex relationship between the plaintext and the ciphertext. The round function remains consistent across all encryption rounds to maintain low complexity. To prevent these consistent rounds from becoming too predictable, round constants are introduced to add variation. The authors argue that LBCSS offers sufficient security based on various tests, including resistance to different cryptanalysis methods and statistical testing.\cite{LBCCS}
 
 
-Chen et al. proposed a new LBC named SAND. The main characteristic of this cipher is that it employs AND, Rotation, and XOR operations (AND-RX) within a Feistel structure. SAND allows for easier security evaluation compared to other AND-RX ciphers. Traditionally, evaluating the security of AND-RX ciphers can be complex because these operations often work on individual bits within the data, making it difficult to apply existing analysis methods typically used for S-boxes. This improvement is achieved by SAND utilizing AND-RX operations within small data units (nibbles). By working with nibbles instead of individual bits, SAND makes its security analysis easier. This allows security researchers to use existing methods designed for analyzing S-boxes, which are a more familiar and well-studied component in cryptography. The authors highlight the benefits of SAND in terms of both security and performance. SAND achieves strong security under various attack scenarios, including differential and linear attacks. The paper also discusses the motivations behind the design of SAND. Existing solutions for ARX-based ciphers often rely on large S-boxes, which are not ideal for hardware implementation. SAND aims to bridge this gap by providing an AND-RX design with efficient hardware implementation and strong security guarantees through its novel S-box transformation approach\cite{SAND}.
+SAND is a LBC that it employs AND, Rotation, and XOR operations (AND-RX) within a FN. Traditionally, evaluating the security of AND-RX ciphers can be complex because these operations often work on individual bits within the data, making it difficult to apply existing analysis methods typically used for S-boxes. SAND allows for easier security evaluation compared to other AND-RX ciphers by utilizing AND-RX operations within small data units (nibbles). This allows security researchers to use existing methods designed for analyzing S-boxes, which are a more familiar and well-studied component in cryptography. The authors highlight the benefits of SAND in terms of both security and performance. SAND achieves strong security under various attack scenarios, including differential and linear attacks. The paper also discusses the motivations behind the design of SAND. Existing ARX-based ciphers often rely on large S-boxes, which are not ideal for hardware implementation. SAND provides an AND-RX design with efficient hardware implementation and strong security guarantees through its novel S-box transformation approach.\cite{SAND}
 
 
-LBC-IoT incorporates two important cryptographic concepts, confusion and diffusion. Confusion scrambles the relationship between the original data and the encrypted data, while diffusion distributes the influence of a single bit change across the entire encrypted message. LBC-IoT achieves this by employing a combination of techniques, including a compact S-box with high non-linearity properties for data substitution and dedicated P-boxes for bit permutation, further obfuscating the relationship between the original and encrypted data. It is well known that FN structures can lack diffusion due to the round function $f$ being applied to only half of the data each round. The solution of LBC-IoT to this problem is to apply a different P-box to each half of the data at the end of the rounds. The cipher utilizes simple operations within its core function and keeps the S-box size small. This approach minimizes the amount of processing power and memory required for implementation. Security-wise, LBC-IoT is resistant to brute-force attacks by adhering to NIST recommendations for key length. It uses an 80-bit key, which is too complex to crack through exhaustive searching methods. In essence, LBC-IoT offers a good balance between robust security and efficient implementation\cite{LBC-IoT}.
+LBC-IoT achieves diffusion by employing a combination of techniques, including a compact S-box with high non-linearity properties for data substitution and dedicated P-boxes for bit permutation, further obfuscating the relationship between the original and encrypted data. It is well known that FN structures can lack diffusion due to the round function $f$ being applied to only half of the data each round. The solution of LBC-IoT to this problem is to apply a different P-box to each half of the data at the end of the rounds. The cipher utilizes simple operations within its core function and keeps the S-box size small. This approach minimizes the amount of processing power and memory required for implementation. Security-wise, LBC-IoT is resistant to brute-force attacks by adhering to NIST recommendations for key length. It uses an 80-bit key, which is too complex to crack through exhaustive searching methods. The authors ensure that LBC-IoT offers a good balance between robust security and efficient implementation.\cite{LBC-IoT}
 
 \begin{table*}[ht]
     \centering
@@ -165,7 +139,7 @@ Lightweight block ciphers are categorized based on their genereal metrics and st
     \item \textbf{Number of rounds}: Compared to conventional ciphers, lightweight block ciphers prioritize simplicity to work on devices with limited resources. Unlike conventional ciphers, they achieve strong security through multiple rounds of processing. While each extra round makes the cipher harder to crack, it also slows down the encryption process. This approach ensures that breaking the cipher becomes more effort than simply trying every possible key.
 \end{itemize}
 
-\section{Techniques to implement} \label{tecnicas}
+\section{Techniques to implement}\label{sec:tec}
 
 This section goes deeper into two of the lightweight block cipher techniques introduced earlier, SAND and GIFT. The remainder of this section will outline their encryption and decryption processes, along with the rationale behind chosing them for implementation. NOTE: Implementations will follow NIST Recommendation for Block Cipher Modes of Operation\cite{dworkin2001recommendation}.
 
@@ -204,21 +178,13 @@ The round function of the SAND cipher depends on a mix of AND, rotation, and XOR
 \subsubsection{Reasons for implementation}
 SAND leverages a novel design approach that restricts its AND-RX operations to work within 4-bit nibbles. This unique approach allows SAND to be represented equivalently using a 4x8 synthetic S-box (SSb). This conversion unlocks the advantage of employing established S-box-based security evaluation methods. Furthermore, the authors claim that the inherent bitslice structure combined with AND-RX operations positions SAND among the top contenders for efficient software implementation. The simplicity of employing AND-RX operations and the robustness of well-developed S-box-based security evalution methods and tools appear to be a promising advancement.
 
-\section{Implementation}
+\section{Implementation}\label{sec:imp}
 
-This section details the implementation of the SAND-128 and GIFT-128 lightweight ciphers in both software and hardware. The software implementation is carried out in C, while the hardware implementation is performed using Verilog and simulated with ModelSim and QuestaSim. The primary metric used to judge the performance of the hardware implementations is the Gate Equivalent (GE). For the software implementations, execution time, memory usage, and throughput are the key metrics.
+This section details the implementation of the SAND-128 and GIFT-128 lightweight ciphers in software. The source code is writen out in C. The metrics used to judge the performance of the implementations are execution time, code size, memory usage, total cycles, latency, efficiency, and throughput, plus a synthetic metric. The rest of the section describes the process and key considerations for the software implementation.
 
-\subsection{Software Implementation}
+\subsection{Algorithm Specification and Code Development}
 
-The software implementation involves writing the SAND-128 and GIFT-128 ciphers in C. This subsection describes the process and key considerations for software development.
-
-\subsubsection{Algorithm Specification}
-
-The specifications of SAND-128 and GIFT-128 were studied from their respective academic papers. This study included understanding the key schedule, as well as the encryption and decryption processes.
-
-\subsubsection{Code Development}
-
-Using the algorithm specifications, the encryption and decryption functions for both ciphers were implemented in C. The operations of each cipher, such as substitutions, permutations, key scheduling, and round functions, were translated into C code.
+The specifications of SAND-128 and GIFT-128 were studied from their respective academic papers. Using the algorithm specifications, the encryption and decryption functions for both ciphers were implemented in C.
 
 \begin{verbatim}
 // GIFT-128 encryption function
@@ -232,9 +198,9 @@ void GIFT128_ENC(uint8_t plaintext[16],
 //
 \end{verbatim}
 
-\subsubsection{Testing and Validation}
+\subsection{Testing and Validation}
 
-The implemented C code was tested using test vectors provided in the original cipher specifications and verified against the test vectors in NIST Special Publication 800-38A 2001 ED\cite{dworkin2001recommendation}, which provides recommendations for block cipher modes of operation. The selected encryption mode is the electronic codebook (ECB). The main drawback lies in its limited diffusion capability, as it does not effectively conceal data patterns when encrypting identical plaintext blocks, resulting in identical ciphertext blocks. This critical disadvantage can be ignored when the plaintext blocks are selected in a testing environment, leaving ECB as the optimal encryption mode because of its simplicity. These tests ensured that the software implementation produced correct outputs for known inputs.
+The implemented C code was tested against the test vectors in NIST Special Publication 800-38A 2001 ED\cite{dworkin2001recommendation}, which provides recommendations for block cipher modes of operation. The selected encryption mode is the electronic codebook (ECB). The main drawback lies in its limited diffusion capability, as it does not effectively conceal data patterns when encrypting identical plaintext blocks, resulting in identical ciphertext blocks. This critical disadvantage can be ignored when the plaintext blocks are selected in a testing environment, leaving ECB as the optimal encryption mode because of its simplicity. These tests ensured that the software implementation produced correct outputs for known inputs.
 
 \begin{verbatim}
 // NIST test vectors
@@ -248,77 +214,72 @@ key:
 //
 \end{verbatim}
 
-\subsubsection{Performance Evaluation}
+\subsection{Performance Evaluation}
 
 The performance of the software implementation was evaluated based on the following metrics.
 
 \begin{itemize}
-    \item \textbf{Execution Time}: The time taken to perform encryption and decryption operations was measured using high-resolution timers.
-    \item \textbf{Memory Usage}: The memory consumption during the encryption and decryption processes was analyzed.
-    \item \textbf{Throughput}: The number of operations processed per unit time was calculated to determine the efficiency of the implementation.
+    \item \textbf{Execution Time}: The time taken to perform encryption operations was measured using high-resolution timers.
+    \item \textbf{Code Size}: Memory size to store the cipher code and constants, measured in kilobytes ($\text{kB}$).
+    \item \textbf{Memory Usage}: The memory consumption during the encryption process was analyzed for both RAM and ROM.
+    \item \textbf{Throughput}: The number of operations processed per unit time was calculated to determine the efficiency of the implementation. Throughput, denoted as \( T \), can be defined as:
+    \[ T = \frac{D}{s} \]
+    where \( D \) is the data size in megabytes (MB) and \( s \) is the time in seconds or as \( t \):
+    \[ t = \frac{d}{ms} \]
+    where \( d \) is the data size in kilobits (kb) and \( ms \) is the time in milliseconds.
+    \item \textbf{Total Cycles}: The total number of clock cycles required for the encryption process.
+    \item \textbf{Latency}: Latency denotes the number of clock cycles required to compute each plaintext/ciphertext block. Latency, denoted as \( L \), can be defined as:
+    \[ L = \frac{N_b}{C} \]
+    where \( N_b \) is the number of 128-bit blocks and \( C \) is the number of cycles.
+    \item \textbf{Efficiency}: Efficiency evaluates the relationship between performance and implementation cost. Generally, higher efficiency values are preferable. Software efficiency follows.
+    \[ E = \frac{t}{S} \]
+    where \( t \) is throughput in kilobits per second (kbps) and \( S \) is the code size in kilobytes (kB).
+    \item \textbf{Synthetic Metrics}: A combined metric such as Code Size $\times$ Cycle Count $/$ Block Size.
 \end{itemize}
 
-\subsection{Hardware Implementation}
+\section{Experiments and Results}\label{sec:exp}
 
-The hardware implementation of SAND-128 and GIFT-128 was performed using Verilog. The design was simulated using ModelSim and QuestaSim to ensure correctness and performance. The designs were evaluated based on the GEs, which measures the area complexity of the hardware implementation.
+\begin{table*}[ht]
+  \centering
+  \caption{Comparison of software performance for encryption with 2MB of messages.}
+  \begin{tabular}{lllllllll} 
+   \toprule
+   Algorithm & Execution Time & Code Size & Memory Usage & Throughput & Total Cycles & Latency & Efficiency & Synth. Metric\\ 
+   \midrule
+   GIFT-128 & 47309 ms & 12.5 kB & 23.2 kB & 21.14 & 162842486 & 1242 & 13852.76 & 15902587 \\
+   SAND-128 & 130976 ms & 4.6 kB & 9 kB & 15.27 & 452417454 & 3452 & 27193.83 & 16258752  \\
+   \bottomrule
+  \end{tabular}
+  \label{table:enc}
+\end{table*}
 
-\subsubsection{Design Specification}
+In this experiments, the key schedule is not taken into account as the round keys are assumed to be precomputed and stored in RAM. The benchmark consists in measuring the time required to encrypt and decryption 2MB data using the ECB mode. All benchmarking results can be found in Table \ref{table:enc} \& \ref{table:dec} and all the tests are accomplished on a PC with 2.7GHz Intel(R) Core i7-7500U CPU using gcc 13.2.0.  
 
-Similar to the software implementation, the hardware implementation began with a study of the algorithm specifications. This study included understanding the datapath, control logic, and timing requirements of the ciphers.
+It can be observed that the GIFT-128 execution time is almost three times shorter than the SAND-128 execution time. This can be attributed in part to the number of rounds and the complexity of functions. The code size is 12.5 kB for GIFT-128 and 4.6 kB for SAND-128. This metric is important when implementation space is limited and code size needs to be minimal. It is important to note that the code size of GIFT will inevitably increase if decryption is also implemented, while the SAND code size will remain the same. Memory usage is significantly smaller for SAND-128, which is crucial when resources are limited and memory usage must be minimal. Throughput, referring to the MB of data processed per second, is better for GIFT-128 at 21.14 MB/s compared to SAND-128 15.27 MB/s. In terms of clock cycles, GIFT-128 employs 1242 cycles per 128-bit block of data, while SAND-128 uses 3452 cycles per 128-bit block of data. Efficiency evaluates the relationship between performance and implementation cost in terms of throughput and code size; SAND-128 is almost twice as efficient as GIFT-128. The synthetic metric reveals that even though these ciphers operate in very distinct ways, considering the previously mentioned metrics, their performance is very similar in terms of code size and cycles per block.
 
-\subsubsection{Verilog Code Development}
-
-The ciphers were described using Verilog HDL. The design included modules for the key schedule, round functions, and overall control logic.
-
-\subsubsection{Simulation and Verification}
-
-The Verilog designs were simulated using ModelSim and QuestaSim. Testbenches were created to apply test vectors to the design and compare the output with expected results.
-
-\begin{verbatim}
-// Testbench for GIFT-128
-module GIFT128_Testbench;
-    reg [127:0] plaintext;
-    reg [127:0] key;
-    wire [127:0] ciphertext;
-
-    GIFT128_Encrypt uut (
-        .plaintext(plaintext),
-        .key(key),
-        .ciphertext(ciphertext)
-    );
-
-    initial begin
-        // Apply test vectors
-        plaintext = /* test vector */;
-        key = /* test vector */;
-        #10; // Wait for encryption 
-        $display("Ciphertext: %h",
-                 ciphertext);
-        // Check if the output matches 
-        // the expected result
-    end
-endmodule
-//
-\end{verbatim}
-
-\subsubsection{Synthesis and Optimization}
-
-After verifying correctness through simulation, the Verilog code was synthesized using FPGA synthesis tools. This step involved optimizing the design for area and speed, with a focus on minimizing the GEs to ensure a lightweight implementation.
+\begin{table*}[ht]
+  \centering
+  \caption{Comparison of software performance for encryption and decryption with 2MB of messages.}
+  \begin{tabular}{lllllllll} 
+   \toprule
+   Algorithm & Execution Time & Code Size & Memory Usage & Throughput & Total Cycles & Latency & Efficiency & Synth. Metric\\ 
+   \midrule
+   GIFT-128 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   SAND-128 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+   \bottomrule
+  \end{tabular}
+  \label{table:dec}
+\end{table*}
 
 
-\subsubsection{Implementation on FPGA (not sure)}
-
-
-\section{Conclusions}
+\section{Conclusions}\label{sec:conc}
 Feistel networks and Substitution-Permutation networks are both fundamental structures for designing lightweight block ciphers. While they share some similarities, they have distinct advantages and disadvantages.
 
-Feistel networks offer inherent invertibility, meaning decryption is straightforward even if the round function itself is not invertible. This simplifies design and analysis. FN ciphers boast several advantages for secure encryption. Each additional round improves the theoretical resistance of the cipher to attacks. Under specific assumptions, their security can be mathematically proven based on the underlying strength of the Feistel function. Additionally, the design offers flexibility by allowing customization of both the Feistel function and the number of rounds to achieve desired security levels. However, these networks also have drawbacks. The overall security hinges heavily on a strong Feistel function, and each round introduces processing overhead, potentially slowing down encryption and decryption.
+Feistel networks offer invertibility, meaning decryption is straightforward even if the round function itself is not invertible. This simplifies design and analysis. However, these ciphers also have drawbacks. The overall security depends heavily on a strong Feistel function, and each round introduces processing overhead, potentially slowing down encryption and decryption.
 
-Substitution-Permutation networks can potentially achieve higher throughput due to their inherent parallelism, making them attractive for hardware implementations with multiple processing units. SPN ciphers are a popular design choice for block ciphers due to their ability to achieve several key security properties.  SPN ciphers achieve confusion by employing S-boxes that perform non-linear operations on the data, making the link between plaintext, key, and ciphertext highly complex. Additionally, P-boxes ensure diffusion by rearranging the data bits, such that a single change in the plaintext has a cascading effect on the final ciphertext. This characteristic, along with the avalanche effect (where minor variations in the plaintext or key lead to significant alterations in the ciphertext), helps resist attacks like differential cryptanalysis. Ultimately, the number of encryption rounds and the design of the S-boxes and P-boxes play a critical role in determining the overall strength and security of an SPN cipher.
+Substitution-Permutation networks can achieve higher throughput due to their inherent parallelism, making them attractive for implementations with multiple processing units, and confusion by employing S-boxes that perform non-linear operations on the data, making the link between plaintext, key, and ciphertext highly complex. Additionally, P-boxes ensure diffusion by rearranging the data bits, such that a single change in the plaintext has a cascading effect on the final ciphertext. Ultimately, the number of encryption rounds and the design of the S-boxes and P-boxes play a critical role in determining the strength and security of an Substitution-Permutation network cipher.
 
 Making the best choice between a Feistel network and a Substitution-Permutation network depends on the specific application and design goals. If ease of decryption and hardware limitations are key concerns, a Feistel network might be preferable. If maximizing encryption speed on parallel hardware is a priority, a Substitution-Permutation network might be a better choice.
-
-Additionally, both can be further enhanced with techniques like bit-slicing, custom S-boxes, combined chaotic systems, and even including modifications to the underlying structure to improve security, performance, or both.
 
 Bit-slicing allows for parallel processing on hardware that supports it, potentially leading to significant speed improvements. It is particularly beneficial for lightweight ciphers designed for resource-constrained environments. However, bit-slicing can increase code complexity, so it is important to find a balance between efficiency and implementation effort. Some S-boxes might be designed with low complexity for compact hardware implementations, while others might prioritize high non-linearity for enhanced security.
 
