@@ -16,10 +16,10 @@ const u32 rconst[40] = {
 void precompute_rkeys(u32* rkey, const u8* key) {
 	u32 tmp;
 
-    rkey[0] = U32BIG(((u32*)key)[3]);
-    rkey[1] = U32BIG(((u32*)key)[1]);
-    rkey[2] = U32BIG(((u32*)key)[2]);
-    rkey[3] = U32BIG(((u32*)key)[0]);
+  rkey[0] = U32BIG(((u32*)key)[3]);
+  rkey[1] = U32BIG(((u32*)key)[1]);
+  rkey[2] = U32BIG(((u32*)key)[2]);
+  rkey[3] = U32BIG(((u32*)key)[0]);
 
 	for(int i = 0; i < 16; i+=2) {
 		rkey[i+4] = rkey[i+1];
@@ -112,11 +112,26 @@ int gift128_encrypt_ecb(u8* ctext, const u8* ptext, u32 ptext_len, const u8* key
 	while(ptext_len > 0) {
 		packing(state, ptext);
 		for(int i = 0; i < 40; i+=5)
-			QUINTUPLE_ROUND(state, rkey + i*2, rconst + i);
+    QUINTUPLE_ROUND(state, rkey + i*2, rconst + i);
 		unpacking(ctext, state);
 		ptext += BLOCK_SIZE;
 		ctext += BLOCK_SIZE;
 		ptext_len -= BLOCK_SIZE;
+	}
+	return 0;
+}
+
+int gift128_decrypt_ecb(u8* ptext, const u8* ctext, u32 ctext_len, const u8* key) {
+	u32 tmp, state[4], rkey[80];
+	precompute_rkeys(rkey, key);
+	while(ctext_len > 0) {
+		packing(state, ctext);
+		for(int i = 35; i >= 0; i-=5)
+    INV_QUINTUPLE_ROUND(state, rkey + i*2, rconst + i);
+		unpacking(ptext, state);
+		ptext += BLOCK_SIZE;
+		ctext += BLOCK_SIZE;
+		ctext_len -= BLOCK_SIZE;
 	}
 	return 0;
 }

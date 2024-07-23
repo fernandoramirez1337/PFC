@@ -20,10 +20,10 @@ u64 A16x3(u64 x) {
 void KeySchedule(const u64 MasterKey[], u64 RoundKey[], int Round, int Dec) {
   RoundKey[1] = MasterKey[1], RoundKey[0] = MasterKey[0];
   for (int r = 0; r < Round - 2; r++)
-    RoundKey[r + 2] = A16x3(RoundKey[r + 1]) ^ RoundKey[r] ^ (r + 1);
+  RoundKey[r + 2] = A16x3(RoundKey[r + 1]) ^ RoundKey[r] ^ (r + 1);
   if (Dec == 1) {
     for (int r = 0; r < (int)(Round / 2); r++)
-      SWAP(RoundKey[r], RoundKey[Round - r - 1]);
+    SWAP(RoundKey[r], RoundKey[Round - r - 1]);
   }
 }
 
@@ -51,6 +51,13 @@ void Bitslice_Round(const u64 PlainText[], u64 CipherText[], const u64 RoundKey[
 void ECB_encrypt_Bitslice(const u64 PlainText[], u64 CipherText[], const u64 RoundKey[], int Round, size_t data_size) {
   size_t blocks = data_size / SAND128_BLOCK_SIZE;
   for (size_t i = 0; i < blocks; ++i) {
-    Bitslice_Round(PlainText + i * 2, CipherText + i * 2, RoundKey, Round);  // 2 * u64 = 128 bits
+    Bitslice_Round(PlainText + i * 2, CipherText + i * 2, RoundKey, Round);  
+  }
+}
+
+void ECB_decrypt_Bitslice(const u64 PlainText[], u64 CipherText[], const u64 RoundKey[], int Round, size_t data_size) {
+  size_t blocks = data_size / SAND128_BLOCK_SIZE;
+  for (size_t i = 0; i < blocks; ++i) {
+    Bitslice_Round(PlainText + i * 2, CipherText + i * 2, RoundKey, Round); 
   }
 }

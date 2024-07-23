@@ -102,6 +102,15 @@
 	s3 ^= 0xffffffff;										\
 	s2 ^= s0 & s1;
 
+#define INV_SBOX(s0, s1, s2, s3)							\
+	s2 ^= s3 & s1;											\
+	s0 ^= 0xffffffff;										\
+	s1 ^= s0;												\
+	s0 ^= s2;												\
+	s2 ^= s3 | s1;											\
+	s3 ^= s1 & s0;											\
+	s1 ^= s3 & s2;
+
 #define QUINTUPLE_ROUND(state, rkey, rconst) ({				\
 	SBOX(state[0], state[1], state[2], state[3]);			\
 	state[3] = NIBBLE_ROR_1(state[3]);						\
@@ -145,6 +154,49 @@
 	state[0] ^= state[3];									\
 })
 
+#define INV_QUINTUPLE_ROUND(state, rkey, rconst) ({			\
+	state[0] ^= state[3];									\
+	state[3] ^= state[0];									\
+	state[0] ^= state[3];									\
+	state[1] ^= (rkey)[8];									\
+	state[2] ^= (rkey)[9];									\
+	state[0] ^= (rconst)[4];								\
+	state[3] = ROR(state[3], 8);							\
+	state[1] = ROR(state[1], 16);							\
+	state[2] = ROR(state[2], 24);							\
+	INV_SBOX(state[3], state[1], state[2], state[0]);		\
+	state[1] ^= (rkey)[6];									\
+	state[2] ^= (rkey)[7];									\
+	state[3] ^= (rconst)[3];								\
+	state[0] = BYTE_ROR_2(state[0]);						\
+	state[1] = BYTE_ROR_4(state[1]);						\
+	state[2] = BYTE_ROR_6(state[2]);						\
+	INV_SBOX(state[0], state[1], state[2], state[3]);		\
+	state[1] ^= (rkey)[4];									\
+	state[2] ^= (rkey)[5];									\
+	state[0] ^= (rconst)[2];								\
+	SWAPMOVE(state[3], state[3], 0x55550000, 1);			\
+	SWAPMOVE(state[1], state[1], 0x55555555, 1);			\
+	SWAPMOVE(state[2], state[2], 0x00005555, 1);			\
+	state[3] = ROR(state[3], 16);							\
+	state[2] = ROR(state[2], 16);							\
+	INV_SBOX(state[3], state[1], state[2], state[0]);		\
+	state[1] ^= (rkey)[2];									\
+	state[2] ^= (rkey)[3];									\
+	state[3] ^= (rconst)[1];								\
+	state[0] = HALF_ROR_12(state[0]);						\
+	state[1] = HALF_ROR_8(state[1]);						\
+	state[2] = HALF_ROR_4(state[2]);						\
+	INV_SBOX(state[0], state[1], state[2], state[3]);		\
+	state[1] ^= (rkey)[0];									\
+	state[2] ^= (rkey)[1];									\
+	state[0] ^= (rconst)[0];								\
+	state[3] = NIBBLE_ROR_3(state[3]);						\
+	state[1] = NIBBLE_ROR_2(state[1]);						\
+	state[2] = NIBBLE_ROR_1(state[2]);						\
+	INV_SBOX(state[3], state[1], state[2], state[0]);		\
+})
+
 #define U32BIG(x)											\
   ((((x) & 0x000000FF) << 24) | (((x) & 0x0000FF00) << 8) | \
    (((x) & 0x00FF0000) >> 8) | (((x) & 0xFF000000) >> 24))
@@ -162,5 +214,6 @@ typedef unsigned char u8;
 typedef unsigned int u32;
 
 int gift128_encrypt_ecb(u8* ctext, const u8* ptext, u32 ptext_len, const u8* key);
+int gift128_decrypt_ecb(u8* ptext, const u8* ctext, u32 ctext_len, const u8* key);
 
 #endif

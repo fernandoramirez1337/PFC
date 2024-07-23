@@ -7,8 +7,8 @@
 typedef uint64_t u64;
 
 #define SAND128_ROUNDS 54
-#define SAND128_BLOCK_SIZE 16 
-#define SAND128_KEY_SIZE 16 
+#define SAND128_BLOCK_SIZE 16
+#define SAND128_KEY_SIZE 16
 
 #define SWAP(x,y) ((x) ^= (y) , (y) ^= (x) , (x) ^= (y))
 
@@ -22,5 +22,6 @@ u64 G1(u64 x);
 void Bitslice_Round(const u64 PlainText[], u64 CipherText[], const u64 RoundKey[], int Round);
 
 void ECB_encrypt_Bitslice(const u64 PlainText[], u64 CipherText[], const u64 RoundKey[], int Round, size_t data_size);
+void ECB_decrypt_Bitslice(const u64 PlainText[], u64 CipherText[], const u64 RoundKey[], int Round, size_t data_size);
 
 #endif /* SAND_H */
